@@ -1,0 +1,24 @@
+
+##################################################################
+# JPA & DataSource
+##################################################################
+
+# SQLite Dialect 지정
+spring:
+  jpa:
+    database-platform: com.fitplanner.core.config.SQLiteDialect
+    hibernate:
+      ddl-auto: validate
+    #      ddl-auto: none
+    #ddl-auto: update
+    show-sql: true
+  # 최초생성시 사용
+  # 운영 기준
+  #spring.jpa.hibernate.ddl-auto=none
+  #spring.jpa.hibernate.ddl-auto=validation
+  datasource:
+    hikari:
+      jdbc-url: "jdbc:sqlite:mydb.db"
+      driver-class-name: org.sqlite.JDBC
+
+###################################################################

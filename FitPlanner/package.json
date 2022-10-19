@@ -1,3 +1,6 @@
 {
-  "name": "FitPlanner"
+  "name": "FitPlanner",
+  "dependencies": {
+    "axios": "^1.1.2"
+  }
 }

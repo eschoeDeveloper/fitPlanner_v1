@@ -1,3 +1,5 @@
+
+
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
@@ -6,8 +8,11 @@
       check out the
       <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
     </p>
+    <p>{{id}}</p>
+    <p>{{name}}</p>
     <h3>Installed CLI Plugins</h3>
     <ul>
+      <li>{{id}}</li>
       <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
       <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
     </ul>
@@ -31,12 +36,44 @@
 </template>
 
 <script>
-export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
+
+  import { callRestApi } from '@/assets/js/common.js';
+
+
+
+  export default {
+    name: 'HelloWorld',
+    props: {
+      msg: String,
+    },
+    data() {
+      return {
+        id : "",
+        name : ""
+      }
+    },
+    methods : {
+
+      async getJsonData() {
+
+        let jsonData = await callRestApi("/api/login/getMainStr", "POST", {"id" : "1111", "name" : "uschoe"});
+        jsonData = JSON.parse(JSON.stringify(jsonData));
+
+        console.log(jsonData);
+
+        console.log(jsonData.id);
+
+        this.id = jsonData.id;
+        this.name = jsonData.name;
+
+      }
+
+    },
+    created() {
+      this.getJsonData();
+    }
   }
-}
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

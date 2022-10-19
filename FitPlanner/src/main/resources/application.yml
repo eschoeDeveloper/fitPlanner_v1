@@ -18,7 +18,13 @@ spring:
   #spring.jpa.hibernate.ddl-auto=validation
   datasource:
     hikari:
-      jdbc-url: "jdbc:sqlite:mydb.db"
+      jdbc-url: "jdbc:sqlite:D:/WorkSpace/FitPlanner/sqlite/fitplanner.db"
       driver-class-name: org.sqlite.JDBC
 
 ###################################################################
+server:
+  port: 7070
+  servlet:
+    encoding:
+      enabled: true
+      charset: UTF-8

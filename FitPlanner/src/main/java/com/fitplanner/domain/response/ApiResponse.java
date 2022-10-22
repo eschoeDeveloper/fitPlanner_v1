@@ -1,0 +1,15 @@
+package com.fitplanner.domain.response;
+
+import lombok.Data;
+
+import java.util.Map;
+
+@Data
+public class ApiResponse {
+
+    private int count;
+    private String message;
+    private Map<String, Object> data;
+    private int code;
+
+}

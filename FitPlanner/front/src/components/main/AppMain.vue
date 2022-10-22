@@ -15,15 +15,15 @@
                 <!-- Email input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="inputId">ID</label>
-                  <input type="email" name="inputId" id="inputId" class="form-control" :placeholder="placeholderId"/>
-                  <p v-if="isIdGuide" style="color: red; font-size: 9px;">입력하신 아이디가 올바르지 않습니다.</p>
+                  <input type="email" ref="inputId"  name="inputId" id="inputId" class="form-control" :placeholder="placeholderId"/>
+                  <p ref="isIdGuide" style="display:none; color: red; font-size: 9px;">입력하신 아이디가 올바르지 않습니다.</p>
                 </div>
 
                 <!-- Password input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="inputPassword">Password</label>
-                  <input type="password" name="inputPassword" id="inputPassword" class="form-control" :placeholder="placeholderPwd"/>
-                  <p v-if="isPwdGuide" style="color:red; font-size: 9px;">입력하신 비밀번호가 올바르지 않습니다.</p>
+                  <input type="password" ref="inputPassword" name="inputPassword" id="inputPassword" class="form-control" :placeholder="placeholderPwd"/>
+                  <p ref="isPwdGuide" style="display:none; color:red; font-size: 9px;">입력하신 비밀번호가 올바르지 않습니다.</p>
                 </div>
 
                 <!-- 2 column grid layout for inline styling -->
@@ -45,8 +45,8 @@
                   </div>
 
                   <div class="row mb-2 d-flex justify-content-right">
-                    <button type="button" @click="goSignIn" class="btn btn-primary btn-block mb-4">Sign In</button>
-                    <button type="button" @click="goLogIn" class="btn btn-success btn-block mb-4">Log In</button>
+                    <button type="button" @click="goSignIn()" class="btn btn-primary btn-block mb-4">Sign In</button>
+                    <button type="button" ref="loginBtn" @click="goLogIn()" class="btn btn-success btn-block mb-4">Log In</button>
                   </div>
 
                 </div>
@@ -70,48 +70,54 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
 
   name: "AppMain",
   data() {
-
     return {
-
       placeholderId : "Please Enter ID",
-      placeholderPwd : "Please Enter Password",
-      isIdGuide: false,
-      isPwdGuide: false
-
+      placeholderPwd : "Please Enter Password"
     }
-
   },
   methods: {
-    goSignIn: () => {
-      alert("페이지 준비중입니다.");
-    },
-    goLogIn: () => {
 
+    goLogIn() {
 
-      this.isIdGuide = false;
-      this.isPwdGuide = false;
+      const checkId = this.$refs.inputId.value;
+      const checkPwd = this.$refs.inputPassword.value;
 
-      const inputId = document.querySelector("input[name=inputId]").value;
-      const inputPassword = document.querySelector("input[name=inputPassword]").value;
-
-      if(!inputId && !inputPassword){
-        this.isIdGuide = true;
-        this.isPwdGuide = true;
-      }else if(!inputId) {
-        this.isIdGuide = true;
-      }else if(!inputPassword){
-        this.isPwdGuide = true;
+      if(!checkId) {
+        this.$refs.isIdGuide.style.display = "block";
+        return false;
+      } else {
+        this.$refs.isIdGuide.style.display = "none";
       }
+
+      if(!checkPwd) {
+        this.$refs.isPwdGuide.style.display = "block";
+        return false;
+      } else {
+        this.$refs.isPwdGuide.style.display = "none";
+      }
+
+      axios.post("/api/member/memberLogin", {
+        loginId: checkId,
+        loginPwd: checkPwd
+      }, {
+        withCredentials: true
+      })
+      .then((response) => {
+        console.log(response);
+      }).catch((error) => {
+        console.log(error);
+      });
 
     }
 
-  },
-  created() {
   }
+
 
 }
 </script>

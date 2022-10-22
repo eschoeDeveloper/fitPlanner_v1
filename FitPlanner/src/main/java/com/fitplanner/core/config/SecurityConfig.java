@@ -15,46 +15,46 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-@RequiredArgsConstructor
-@Configuration
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@RequiredArgsConstructor
+//@Configuration
+//@EnableWebSecurity
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-    @Bean("SecurityFilterChain")
-    public SecurityFilterChain filterChain(HttpSecurity httpse) throws Exception {
-
-        httpse.authorizeRequests()
-                .antMatchers("/api/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                    .headers()
-                        .addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
+//    @Bean("SecurityFilterChain")
+//    public SecurityFilterChain filterChain(HttpSecurity httpse) throws Exception {
+//
+//        httpse.authorizeRequests()
+//                .antMatchers("/api/**").permitAll()
+//                .anyRequest().authenticated()
 //                .and()
-//                    .formLogin()
-//                    .loginPage("")
-//                    .defaultSuccessUrl("/")
-                .and()
-                    .logout()
-                    .logoutRequestMatcher(new AntPathRequestMatcher(""))
-                    .logoutSuccessUrl("/")
-                    .invalidateHttpSession(true)
-                ;
-
-        return httpse.build();
-
-    }
-
-    @Bean("passwordEncoder")
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean("authenticationManager")
-    public AuthenticationManager authenticationManager(
-      AuthenticationConfiguration authenticationConfiguration
-    ) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
+//                    .headers()
+//                        .addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
+////                .and()
+////                    .formLogin()
+////                    .loginPage("")
+////                    .defaultSuccessUrl("/")
+//                .and()
+//                    .logout()
+//                    .logoutRequestMatcher(new AntPathRequestMatcher(""))
+//                    .logoutSuccessUrl("/")
+//                    .invalidateHttpSession(true)
+//                ;
+//
+//        return httpse.build();
+//
+//    }
+//
+//    @Bean("passwordEncoder")
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
+//
+//    @Bean("authenticationManager")
+//    public AuthenticationManager authenticationManager(
+//      AuthenticationConfiguration authenticationConfiguration
+//    ) throws Exception {
+//        return authenticationConfiguration.getAuthenticationManager();
+//    }
 
 }

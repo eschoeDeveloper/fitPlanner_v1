@@ -14,7 +14,7 @@ import javax.sql.DataSource;
 @Configuration
 @EnableJpaAuditing
 @EnableJpaRepositories(
-  basePackages = "com.fitplanner."
+  basePackages = "com.fitplanner.domain"
 )
 @RequiredArgsConstructor
 public class DatabaseConfig {

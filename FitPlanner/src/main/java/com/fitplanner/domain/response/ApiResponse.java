@@ -9,7 +9,7 @@ public class ApiResponse {
 
     private int count;
     private String message;
-    private Map<String, Object> data;
+    private Object data;
     private int code;
 
 }

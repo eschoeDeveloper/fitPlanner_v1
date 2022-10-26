@@ -4,6 +4,7 @@ const path = require('path');
 module.exports = defineConfig({
     transpileDependencies: true,
     lintOnSave : false,
+    outputDir:"../src/main/resources/static",
     configureWebpack: {
       resolve: {
         alias: {
@@ -17,11 +18,7 @@ module.exports = defineConfig({
             "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
             "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
         },
-        proxy: {
-            '/api': {
-                target: 'http://localhost:7070',
-                changeOrigin: true
-            }
-        }
+        proxy: "http://localhost:7070/",
+        hot: true
     }
 })

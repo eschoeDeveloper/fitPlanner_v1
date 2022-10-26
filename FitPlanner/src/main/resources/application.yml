@@ -18,8 +18,11 @@ spring:
   #spring.jpa.hibernate.ddl-auto=validation
   datasource:
     hikari:
-      jdbc-url: "jdbc:sqlite:D:/WorkSpace/FitPlanner/sqlite/fitplanner.db"
+      jdbc-url: "jdbc:sqlite:/Users/choeuiseung/Desktop/fitPlanner/FitPlanner/sqlite/fitplanner.db"
       driver-class-name: org.sqlite.JDBC
+  devtools:
+    livereload:
+      enabled: true
 
 ###################################################################
 server:

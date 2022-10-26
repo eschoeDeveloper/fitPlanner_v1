@@ -1,6 +1,7 @@
 package com.fitplanner.domain.member.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fitplanner.domain.member.model.CheckIdMapping;
 import com.fitplanner.domain.member.model.Member;
 import com.fitplanner.domain.member.model.MemberDto;
 import com.fitplanner.domain.member.model.MemberParam;
@@ -13,14 +14,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Collections;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -31,11 +34,16 @@ public class MemberController {
     @Autowired
     MemberService memberService;
 
+    /**
+     * 로그인
+     * */
    @PostMapping(value = "/login", produces = MediaType.APPLICATION_JSON_VALUE)
    public ResponseEntity<ApiResponse> memberLogin(
            @RequestBody MemberParam memberParam,
            HttpServletRequest request
    ) {
+
+       HttpSession httpSession = request.getSession();
 
        ApiResponse apiResponse;
 
@@ -44,24 +52,22 @@ public class MemberController {
            Member findMember = Member.builder().id(memberParam.getId()).password(memberParam.getPassword()).build();
            MemberDto loginMember = memberService.loginMember(findMember);
 
-           HttpSession httpSession = request.getSession();
-
            //log.info("loginMember = {}", loginMember);
-
            ObjectMapper mapper = new ObjectMapper();
            String jsonString = mapper.writeValueAsString(loginMember);
            JSONObject jsonObject = new JSONObject(jsonString);
-
-           if(httpSession.getAttribute("loginMember") == null) {
-               httpSession.setAttribute("loginMember", loginMember);
-           } else {
-
-           }
 
            apiResponse = new ApiResponse();
 
            if(loginMember != null) {
 
+               if(httpSession.getAttribute("loginMember") == null) {
+                   httpSession.setAttribute("loginMember", loginMember);
+                   jsonObject.put("ssoLogin", "N");
+               } else {
+                   jsonObject.put("ssoLogin", "Y");
+               }
+               
                apiResponse.setMessage(HttpStatus.OK.name());
                apiResponse.setCode(HttpStatus.OK.value());
                apiResponse.setCount(1);
@@ -75,6 +81,7 @@ public class MemberController {
                apiResponse.setData(Collections.emptyMap());
 
            }
+
 
        } catch(Exception e) {
 
@@ -93,6 +100,57 @@ public class MemberController {
 
    }
 
+   @PostMapping(value = "/checkId/{checkId}", produces = MediaType.APPLICATION_JSON_VALUE)
+   public ResponseEntity<ApiResponse> memberIdCheck(
+     @PathVariable("checkId") String checkId
+   ) {
+
+       ApiResponse apiResponse;
+
+       try {
+
+           Base64.Decoder decoder = Base64.getDecoder();
+           byte[] decodedBytes = decoder.decode(checkId.getBytes(Charset.defaultCharset()));
+           String decodeCheckId = new String(decodedBytes, Charset.defaultCharset());
+
+//           log.info("decodeCheckId = {}" , decodeCheckId);
+
+           List<CheckIdMapping> checkMember = memberService.findById(decodeCheckId);
+
+           apiResponse = new ApiResponse();
+
+           apiResponse.setCount(checkMember.size());
+
+           if(apiResponse.getCount() == 0) {
+               apiResponse.setMessage(HttpStatus.OK.name());
+               apiResponse.setCode(HttpStatus.OK.value());
+               apiResponse.setData("Y");
+           } else {
+               apiResponse.setMessage("사용중인 아이디");
+               apiResponse.setCode(HttpStatus.CONFLICT.value());
+               apiResponse.setData("N");
+           }
+
+       } catch( Exception e ) {
+
+           e.printStackTrace();
+
+           apiResponse = new ApiResponse();
+
+           apiResponse.setMessage(e.getLocalizedMessage());
+           apiResponse.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+           apiResponse.setCount(0);
+           apiResponse.setData(Collections.emptyMap());
+
+       }
+
+       return ResponseEntity.ok(apiResponse);
+
+   }
+
+    /**
+     * 회원가입
+     * */
     @PostMapping(value = "/signUp", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse> memberSignUp(
             @RequestBody MemberParam inputMember,
@@ -102,6 +160,8 @@ public class MemberController {
         ApiResponse apiResponse;
 
         try {
+
+            log.info("Sign Up Member = {}", inputMember);
 
 //            MemberDto signUpMember = memberService.memberSignUp(inputMember);
 
@@ -150,6 +210,10 @@ public class MemberController {
 
     }
 
+
+    /**
+     * 로그아웃
+     * */
     @PostMapping(value = "/logout", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse> memberLogout(HttpServletRequest request) {
 

@@ -31,3 +31,5 @@ server:
     encoding:
       enabled: true
       charset: UTF-8
+    session:
+      timeout: 1500

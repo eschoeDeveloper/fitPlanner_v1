@@ -153,45 +153,46 @@ public class MemberController {
      * */
     @PostMapping(value = "/signUp", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse> memberSignUp(
-            @RequestBody MemberParam inputMember,
+            @RequestBody Member signUpMember,
             HttpServletRequest request
     ) {
+
+        HttpSession httpSession = request.getSession();
 
         ApiResponse apiResponse;
 
         try {
 
-            log.info("Sign Up Member = {}", inputMember);
 
-//            MemberDto signUpMember = memberService.memberSignUp(inputMember);
+            log.info("Sign Up Member = {}", signUpMember);
 
-//            ObjectMapper mapper = new ObjectMapper();
-//            String jsonString = mapper.writeValueAsString(signUpMember);
-//            JSONObject jsonObject = new JSONObject(jsonString);
-//
-//            if(httpSession.getAttribute("loginMember") == null) {
-//                httpSession.setAttribute("loginMember", signUpMember);
-//            } else {
-//
-//            }
+            int complete = memberService.signUpMember(signUpMember);
+
+            log.info("Sign Up Member = {}", complete);
+
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonString = mapper.writeValueAsString(signUpMember);
+            JSONObject jsonObject = new JSONObject(jsonString);
 
             apiResponse = new ApiResponse();
+            apiResponse.setCount(complete);
 
-//            if(loginMember != null) {
+            if(complete > 0) {
 
-//                apiResponse.setMessage(HttpStatus.OK.name());
-//                apiResponse.setCode(HttpStatus.OK.value());
-//                apiResponse.setCount(1);
-//                apiResponse.setData(jsonObject.toString());
-//
-//            } else {
+                httpSession.setAttribute("loginMember", signUpMember);
+                jsonObject.put("ssoLogin", "Y");
+
+                apiResponse.setMessage(HttpStatus.OK.name());
+                apiResponse.setCode(HttpStatus.OK.value());
+                apiResponse.setData(jsonObject.toString());
+
+            } else {
 
                 apiResponse.setMessage(HttpStatus.INTERNAL_SERVER_ERROR.name());
                 apiResponse.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-                apiResponse.setCount(0);
                 apiResponse.setData(Collections.emptyMap());
 
-//            }
+            }
 
         } catch(Exception e) {
 

@@ -29,4 +29,7 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     @Query(nativeQuery = true, value="SELECT a.SEQ FROM FP_MEMBER a WHERE ID = :checkId")
     List<CheckIdMapping> findMemberById(@Param("checkId") String checkId);
 
+    @Query(nativeQuery = true, value="INSERT INTO FP_MEMBER(ID, NAME, PASSWORD, PHONE, BIRTHDAY, EMAIL, AGE, GENDER, ROLE_LEVEL, REGIST_ID, REGIST_DT, UPDATE_ID, UPDATE_DT,  ) SELECT :#{#signUpMember.id}, :#{#signUpMember.name}, :#{#signUpMember.password},:#{#signUpMember.phone}, :#{#signUpMember.birthday}, :#{#signUpMember.email}, cast(strftime('%Y.%m%d', 'now') - strftime('%Y.%m%d', :#{#signUpMember.birthday}) as age, :#{#signUpMember.gender}, ROLE_LEVEL, 'SYSTEM', now(), 'SYSTEM', now()  FROM FP_ROLE WHERE ROLE_LEVEL = '5'")
+    int signUpMember(@Param("signUpMember") Member signUpMember);
+
 }

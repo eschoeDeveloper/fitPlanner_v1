@@ -25,5 +25,6 @@ public interface MemberService {
     List<CheckIdMapping> findById(String checkId);
 
     MemberDto loginMember(Member findMember);
+    int signUpMember(Member insertMember);
 
 }

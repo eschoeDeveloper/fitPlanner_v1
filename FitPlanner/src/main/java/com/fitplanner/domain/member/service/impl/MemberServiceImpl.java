@@ -74,6 +74,11 @@ public class MemberServiceImpl implements MemberService {
 
     }
 
+    @Override
+    public int signUpMember(Member signUpMember) {
+        return memberRepository.signUpMember(signUpMember);
+    }
+
 }
 
 

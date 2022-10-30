@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import { VueCookies } from 'vue-cookies'
+import VueCookies from 'vue-cookies'
 
 import router from './router/index'
 import axios from 'axios';
@@ -17,7 +17,10 @@ const fitPlannerApp = createApp(App);
 fitPlannerApp.config.globalProperties.axios = axios;
 fitPlannerApp.use(VueCookies,{
     expireTimes: "60*60*12",
-    secure: true
-})
+    path: "/",
+    domain: "",
+    secure: true,
+    sameSite: "None"
+});
 fitPlannerApp.use(router);
 fitPlannerApp.mount("#app");

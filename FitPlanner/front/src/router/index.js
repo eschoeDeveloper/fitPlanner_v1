@@ -10,6 +10,7 @@ import AppFitExercise from "../components/AppFitExercise.vue";
 import AppFitFoodDiet from "../components/AppFitFoodDiet.vue";
 import AppFitHealthGym from "../components/AppFitHealthGym.vue";
 import AppMemberEdit from "../components/AppMemberEdit.vue";
+import AppSignUpResult from "../components/AppSignUpResult.vue";
 
 const routes = [
     { path: "/", name: "AppLogin", component: AppLogin},
@@ -21,7 +22,8 @@ const routes = [
     { path: "/fitExercise", name: "AppFitExercise", component: AppFitExercise},
     { path: "/fitFoodDiet", name: "AppFitFoodDiet", component: AppFitFoodDiet},
     { path: "/fitHealthGym", name: "AppFitHealthGym", component: AppFitHealthGym},
-    { path: "/fitMemberEdit", name: "AppMemberEdit", component: AppMemberEdit}
+    { path: "/fitMemberEdit", name: "AppMemberEdit", component: AppMemberEdit},
+    { path: "/signUpResult", name: "AppSignUpResult", component: AppSignUpResult}
 ]
 
 const router = createRouter({

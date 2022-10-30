@@ -5,12 +5,14 @@
 
 # SQLite Dialect 지정
 spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
   jpa:
     database-platform: com.fitplanner.core.config.SQLiteDialect
     hibernate:
       ddl-auto: validate
-    #      ddl-auto: none
-    #ddl-auto: update
     show-sql: true
   # 최초생성시 사용
   # 운영 기준
@@ -20,10 +22,25 @@ spring:
     hikari:
       jdbc-url: "jdbc:sqlite:/Users/choeuiseung/Desktop/fitPlanner/FitPlanner/sqlite/fitplanner.db"
       driver-class-name: org.sqlite.JDBC
+    tomcat:
+      max-idle: 20
+      min-idle: 15
+      max-active: 50
+      max-wait: 20000
   devtools:
     livereload:
       enabled: true
-
+#jwt:
+#  header: Authorization
+#  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+#  token-validity-in-seconds: 86400
+###################################################################
+#cloud:
+#  aws:
+#    region:
+#      static: ap-northeast-2
+#    stack:
+#      auto: false
 ###################################################################
 server:
   port: 7070
@@ -33,3 +50,5 @@ server:
       charset: UTF-8
     session:
       timeout: 1500
+
+

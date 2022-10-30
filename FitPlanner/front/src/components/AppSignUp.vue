@@ -1,20 +1,21 @@
 <template>
   <section class="h-100 h-custom" style="background-color: #8fc4b7;">
-    <div class="container py-5 h-100">
+    <div class="container h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-md-8">
           <div class="card rounded-3">
-            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/img3.webp"
+            <img src="https://health.chosun.com/site/data/img_dir/2018/03/07/2018030700812_2.jpg"
                  class="w-100" style="border-top-left-radius: .3rem; border-top-right-radius: .3rem;"
                  alt="Sample photo">
             <div class="card-body p-4 p-md-5">
-              <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">신규회원 정보 입력</h3>
+              <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">FitPlanner</h3>
 
               <form class="px-md-2">
 
                 <div class="row">
-                  <div class="col-md-8 mb-4">
-                    <div class="form-outline mb-4">
+
+                  <div class="col-7">
+                    <div class="form-outline">
                       <label class="form-label" for="id">아이디</label>
                       <input type="text" ref="id" id="id" class="form-control" />
                       <p ref="idGuide" style="display:none; color: red; font-size: 9px;">아이디를 입력해주세요.</p>
@@ -23,46 +24,43 @@
                       <p ref="errorGuide" style="display:none; color:darkgoldenrod; font-size:9px;">사용하실 수 있는 아이디입니다.</p>
                     </div>
                   </div>
-                  <div class="col-md-4 mb-4">
-                    <div class="form-outline mb-4">
-                      <button type="button" class="btn btn-info btn-lg mb-1" @click="goCheckId()">중복확인</button>
+
+                  <div class="col-5 mt-4">
+                    <div class="form-outline mt-2">
+                      <button type="button" class="btn btn-info btn-block" @click="goCheckId()">중복확인</button>
                     </div>
+                  </div>
+
+                </div>
+
+                <div class="row mt-2">
+                  <div class="form-outline">
+                    <label class="form-label" for="password">암호</label>
+                    <input type="password" ref="password" id="password" class="form-control" />
+                    <p ref="passwordGuide" style="display:none; color: red; font-size: 9px;">암호를 확인해주세요.</p>
                   </div>
                 </div>
 
-
-
-                <div class="row">
-                  <div class="col-md-6 mb-4">
-
-                    <div class="form-outline mb-4">
-                      <label class="form-label" for="password">암호</label>
-                      <input type="password" ref="password" id="password" class="form-control" />
-                      <p ref="passwordGuide" style="display:none; color: red; font-size: 9px;">암호를 확인해주세요.</p>
-                    </div>
-
-                  </div>
-                  <div class="col-md-6 mb-4">
-                    <div class="form-outline mb-4">
-                      <label class="form-label" for="checkPassword">암호 확인</label>
-                      <input type="password" ref="checkPassword" id="checkPassword" class="form-control" />
-                      <p ref="checkPasswordGuide1" style="display:none; color: red; font-size: 9px;">암호 확인을 입력하지 않았습니다.</p>
-                      <p ref="checkPasswordGuide2" style="display:none; color: red; font-size: 9px;">입력된 암호가 일치하지 않습니다.</p>
-                    </div>
+                <div class="row mt-2">
+                  <div class="form-outline">
+                    <label class="form-label" for="checkPassword">암호 확인</label>
+                    <input type="password" ref="checkPassword" id="checkPassword" class="form-control" />
+                    <p ref="checkPasswordGuide1" style="display:none; color: red; font-size: 9px;">암호 확인을 입력하지 않았습니다.</p>
+                    <p ref="checkPasswordGuide2" style="display:none; color: red; font-size: 9px;">입력된 암호가 일치하지 않습니다.</p>
                   </div>
                 </div>
 
-                <div class="row">
-                  <div class="col-md-6 mb-4">
-                    <div class="form-outline mb-4">
+                <div class="row mt-2">
+                  <div class="col-6">
+                    <div class="form-outline">
                       <label class="form-label" for="name">이름</label>
                       <input type="text" ref="name" id="name" class="form-control" />
                       <p ref="nameGuide" style="display:none; color: red; font-size: 9px;">이름을 입력해주세요.</p>
                     </div>
                   </div>
 
-                  <div class="col-md-6 mb-4">
-                    <div class="form-outline mb-4">
+                  <div class="col-6">
+                    <div class="form-outline">
                       <label class="form-label" for="phone">휴대폰번호</label>
                       <input type="text" ref="phone" id="phone" class="form-control" />
                       <p ref="phoneGuide" style="color: blue; font-size: 9px;">휴대폰 번호를 입력하시면 다양한 소식을 제공받을 수 있습니다.</p>
@@ -70,18 +68,17 @@
                   </div>
                 </div>
 
-                <div class="row">
-                  <div class="col-md-6 mb-4">
-                    <div class="form-outline mb-4">
+                <div class="row mt-2">
+
+                  <div class="col-6">
+                    <div class="form-outline">
                       <label class="form-label" for="email">이메일</label>
                       <input type="email" ref="email" id="email" class="form-control" />
                       <p ref="phoneGuide" style="color: blue; font-size: 9px;">암호 찾기시 이메일을 통하여 인증번호가 발송됩니다.</p>
                     </div>
                   </div>
-                </div>
 
-                <div class="row">
-                  <div class="col-md-6 mb-4">
+                  <div class="col-6">
 
                     <div class="form-outline datepicker">
                       <label for="birthday" class="form-label">생년월일</label>
@@ -90,10 +87,16 @@
                     </div>
 
                   </div>
-                  <div class="col-md-6 mb-4">
 
-                    <select class="select" ref="gender" id="gender">
-                      <option value="" disabled>성별</option>
+                </div>
+
+                <div class="row mt-2">
+
+
+                  <div class="form-outline">
+
+                    <select class="form-select" ref="gender" id="gender">
+                      <option value="" selected disabled>성별</option>
                       <option value="G01">남성</option>
                       <option value="G02">여성</option>
                     </select>
@@ -101,10 +104,14 @@
                     <p ref="genderGuide" style="display:none; color: red; font-size: 9px;">성별을 입력해주세요.</p>
 
                   </div>
+
                 </div>
 
-                <div class="form-outline mb-4">
-                  <button type="button" ref="signUpBtn" @click="goSignUp()" class="btn btn-success btn-lg mb-1" :disabled="isCheckId == 'N'">회원가입</button>
+                <div class="row mt-4">
+                  <div class="form-outline">
+                    <button type="button" ref="signUpBtn" @click="goSignUp()" class="btn btn-success btn-block mb-4" :disabled="isCheckId == 'N'">회원가입</button>
+                    <button type="button" ref="signUpBtn" @click="goLogIn()" class="btn btn-primary btn-block mb-4 ms-1">로그인</button>
+                  </div>
                 </div>
 
               </form>
@@ -215,8 +222,6 @@ export default {
 
       console.log("this.$data.isCheckId = {}", this.$data.isCheckId);
 
-
-
         const JsonData = JSON.stringify({
           id : inputId,
           name : inputName,
@@ -230,20 +235,28 @@ export default {
         this.axios.post("/api/member/signUp", JsonData, {
           withCredentials: true,
         })
-            .then((response) => {
+        .then((response) => {
 
-              let respJson = JSON.parse(JSON.stringify(response.data));
-              let respCode = respJson.code;
+          let respJson = JSON.parse(JSON.stringify(response.data));
+          let respCode = respJson.code;
+          let resMsg = "";
 
-              /*if (Number(respCode) >= 300) {
-                this.$router.push({path: '/'});
-              }*/
+          if (Number(respCode) >= 300) {
+            resMsg = "회원가입 오류! 관리자에게 문의하여 주세요.";
+          } else if(Number(respCode < 300)) {
+            resMsg = "회원가입 완료! FitPlanner 회원이 되신것을 축하합니다.";
+          }
 
-            }).catch((error) => {
+          this.$router.push({name: 'AppSignUpResult', params:{respCode: respCode, respMsg: resMsg}});
+
+        }).catch((error) => {
           console.log(error);
         });
 
 
+    },
+    goLogIn() {
+      this.$router.push({path:"/"});
     },
     showToast(msg) {
       alert(msg);

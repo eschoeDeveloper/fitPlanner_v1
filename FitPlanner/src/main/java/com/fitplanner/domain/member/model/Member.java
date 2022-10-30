@@ -38,9 +38,9 @@ public class Member {
     private MemberRole memberRole;
 
     @Id
-    @Column(name="SEQ")
+    @Column(name="SEQ", insertable=false, updatable=false)
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private int seq;
+    private Integer seq;
 
     @Column(name="ID")
     private String id;

@@ -14,7 +14,8 @@
     "mdb-vue-ui-kit": "^3.0.0",
     "vue": "^3.2.13",
     "vue-cookies": "^1.8.1",
-    "vue-router": "^4.0.13"
+    "vue-router": "^4.0.13",
+    "vue3-cookies": "^1.0.6"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

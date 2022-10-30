@@ -9,39 +9,43 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig {
+public class SecurityConfig{
 
-    @Bean("SecurityFilterChain")
+    @Bean("securityFilterChain")
     public SecurityFilterChain filterChain(HttpSecurity httpse) throws Exception {
 
-        httpse.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .httpBasic()
-                .and()
-                .authorizeRequests()
-                .antMatchers("/**").permitAll()
-                .antMatchers("/api/**/memberLogin").authenticated()
-                .anyRequest().authenticated()
-                .and()
-                .csrf().disable();
+        httpse.formLogin().disable();
+
+        httpse.csrf().disable();		// 개발 시 에만
+
+        httpse.authorizeRequests()
+                .antMatchers("/api/**").authenticated();
 
         return httpse.build();
 
     }
 
+    @Bean("webSecurityCustomizer")
+    public WebSecurityCustomizer webSecurityCustomizer() {
+
+        return (web -> {
+            web.ignoring().antMatchers("/api/member/**");
+        });
+
+    }
+
     @Bean("passwordEncoder")
-    public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncode() {
         return new BCryptPasswordEncoder();
     }
 

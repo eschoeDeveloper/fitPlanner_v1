@@ -13,5 +13,6 @@ package com.fitplanner.domain.member.model;
  * =======================================================
  */
 public interface CheckIdMapping {
-    public int getSeq();
+    Integer getSeq();
+    String getPassword();
 }

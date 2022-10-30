@@ -31,8 +31,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberController {
 
-    @Autowired
-    MemberService memberService;
+    private final MemberService memberService;
 
     /**
      * 로그인
@@ -43,31 +42,24 @@ public class MemberController {
            HttpServletRequest request
    ) {
 
-       HttpSession httpSession = request.getSession();
-
        ApiResponse apiResponse;
 
        try {
 
            Member findMember = Member.builder().id(memberParam.getId()).password(memberParam.getPassword()).build();
-           MemberDto loginMember = memberService.loginMember(findMember);
-
-           //log.info("loginMember = {}", loginMember);
-           ObjectMapper mapper = new ObjectMapper();
-           String jsonString = mapper.writeValueAsString(loginMember);
-           JSONObject jsonObject = new JSONObject(jsonString);
+           int loginMember = memberService.loginMember(findMember);
 
            apiResponse = new ApiResponse();
 
-           if(loginMember != null) {
+           if(loginMember > 0) {
 
-               if(httpSession.getAttribute("loginMember") == null) {
-                   httpSession.setAttribute("loginMember", loginMember);
-                   jsonObject.put("ssoLogin", "N");
-               } else {
+               HttpSession httpSession = request.getSession();
+
+               JSONObject jsonObject = new JSONObject();
+               if(httpSession.getAttribute("ssoLogin") == null) {
                    jsonObject.put("ssoLogin", "Y");
                }
-               
+
                apiResponse.setMessage(HttpStatus.OK.name());
                apiResponse.setCode(HttpStatus.OK.value());
                apiResponse.setCount(1);
@@ -75,10 +67,13 @@ public class MemberController {
 
            } else {
 
+               JSONObject jsonObject = new JSONObject();
+               jsonObject.put("ssoLogin", "N");
+
                apiResponse.setMessage(HttpStatus.INTERNAL_SERVER_ERROR.name());
                apiResponse.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
                apiResponse.setCount(0);
-               apiResponse.setData(Collections.emptyMap());
+               apiResponse.setData(jsonObject.toString());
 
            }
 
@@ -157,27 +152,24 @@ public class MemberController {
             HttpServletRequest request
     ) {
 
-        HttpSession httpSession = request.getSession();
-
         ApiResponse apiResponse;
 
         try {
-
-
-            log.info("Sign Up Member = {}", signUpMember);
 
             int complete = memberService.signUpMember(signUpMember);
 
             log.info("Sign Up Member = {}", complete);
 
-            ObjectMapper mapper = new ObjectMapper();
-            String jsonString = mapper.writeValueAsString(signUpMember);
-            JSONObject jsonObject = new JSONObject(jsonString);
-
             apiResponse = new ApiResponse();
             apiResponse.setCount(complete);
 
             if(complete > 0) {
+
+                ObjectMapper mapper = new ObjectMapper();
+                String jsonString = mapper.writeValueAsString(signUpMember);
+                JSONObject jsonObject = new JSONObject(jsonString);
+
+                HttpSession httpSession = request.getSession();
 
                 httpSession.setAttribute("loginMember", signUpMember);
                 jsonObject.put("ssoLogin", "Y");

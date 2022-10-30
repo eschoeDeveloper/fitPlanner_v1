@@ -1,15 +1,15 @@
 <template>
 
   <section class="h-100 h-custom" style="background-color: #8fc4b7;">
-    <div class="container py-5 h-100">
+    <div class="container h-100">
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col-md-8">
           <div class="card rounded-3">
-            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/img3.webp"
+            <img src="https://health.chosun.com/site/data/img_dir/2018/03/07/2018030700812_2.jpg"
                  class="w-100" style="border-top-left-radius: .3rem; border-top-right-radius: .3rem;"
                  alt="Sample photo">
             <div class="card-body p-4 p-md-5">
-              <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">FitPlanner 로그인</h3>
+              <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">FitPlanner</h3>
 
               <form class="px-md-2">
 
@@ -28,7 +28,7 @@
                 <div class="row">
                   <div class="col-md-6 mb-4">
                     <div class="form-outline mb-4">
-                      <input class="form-check-input" type="checkbox" ref="idSave" id="idSave" @click="cookieSave()"/>
+                      <input class="form-check-input" type="checkbox" ref="idSave" id="idSave" v-on:change="saveLoginIdByCookie()" true-value="true" false-value="false"/>
                       <label class="form-check-label" for="idSave"> 아이디 저장 </label>
                     </div>
                   </div>
@@ -36,7 +36,7 @@
 
                 <div class="row">
                   <div class="col-md-6 mb-4">
-                    <a @click="goPwdReset()">사용중인 암호를 잊으셨나요?</a>
+                    <a class="link-primary" @click="goPwdReset()">사용중인 암호를 잊으셨나요?</a>
                   </div>
                 </div>
 
@@ -68,16 +68,32 @@ export default {
       placeholderPwd : "Please Enter Password"
     }
   },
+  mounted() {
+    window.addEventListener("load", () => this.setLoginIdByCookie());
+  },
   methods: {
+    setLoginIdByCookie() {
 
+      // sso 로그인
+      if(this.$cookies.isKey("ssoLogin")) {
+
+        if( this.$cookies.get("ssoLogin") === "Y" ) {
+          this.$router.push({ path: '/main' });
+        }
+
+      }
+
+      if(this.$cookies.isKey("cookie_loginId")) {
+        this.$refs.inputId.value = this.$cookies.get("cookie_loginId");
+        this.$refs.idSave.checked = true;
+      }
+
+    },
     goSignUp() {
       this.$router.push({ path: '/signUp' });
     },
     goPwdReset() {
       this.$router.push({ path: '/pwdReset' });
-    },
-    ss() {
-      console.log(this.$refs.idSave.itemValue);
     },
     goLogIn() {
 
@@ -114,7 +130,10 @@ export default {
       .then((response) => {
 
         let respJson = JSON.parse(JSON.stringify(response.data));
+        let respData = JSON.parse(respJson.data);
         let respCode = respJson.code;
+
+        this.$cookies.set("ssoLogin", respData["ssoLogin"]);
 
         if(Number(respCode) < 400 ) {
           this.$router.push({ path: '/main' });
@@ -125,6 +144,15 @@ export default {
       }).catch((error) => {
         console.log(error);
       });
+
+    },
+    saveLoginIdByCookie() {
+
+      if(this.$refs.idSave.checked) {
+        this.$cookies.set("cookie_loginId", this.$refs.inputId.value);
+      } else {
+        if(this.$cookies.isKey("cookie_loginId")) this.$cookies.remove("cookie_loginId");
+      }
 
     }
 

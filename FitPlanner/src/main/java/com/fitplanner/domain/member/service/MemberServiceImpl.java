@@ -1,15 +1,17 @@
-package com.fitplanner.domain.member.service.impl;
+package com.fitplanner.domain.member.service;
 
 import com.fitplanner.domain.member.model.CheckIdMapping;
 import com.fitplanner.domain.member.model.Member;
 import com.fitplanner.domain.member.model.MemberDto;
 import com.fitplanner.domain.member.repository.MemberRepository;
-import com.fitplanner.domain.member.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * package     : com.fitplanner.domain.member.service.impl
@@ -25,10 +27,12 @@ import java.util.List;
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
-    @Autowired
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<Member> findAll() {
@@ -49,34 +53,46 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberDto loginMember(Member findMember) {
+    public int loginMember(Member loginMember) {
 
-        String loginId = findMember.getId();
-        String loginPassword = findMember.getPassword();
+        String loginId = loginMember.getId();
+        String loginPassword = loginMember.getPassword();
 
-        Member getMember = memberRepository.loginMember(loginId, loginPassword);
+        List<CheckIdMapping> findMember = memberRepository.findMemberById(loginId);
 
-        MemberDto memberDto = MemberDto.builder()
-                .seq(getMember.getSeq())
-                .id(getMember.getId())
-                .name(getMember.getName())
-                .age(getMember.getAge())
-                .gender(getMember.getGender())
-                .phone(getMember.getPhone())
-                .birthday(getMember.getBirthday())
-                .email(getMember.getEmail())
-                .roleLevel(getMember.getMemberRole().getRoleLevel())
-                .roleNm(getMember.getMemberRole().getRoleNm())
-                .roleSeq(getMember.getMemberRole().getRoleSeq())
-                .build();
+        int isLogin = 0;
 
-        return memberDto;
+        log.info("matches = {}" , passwordEncoder.matches(loginPassword, findMember.get(0).getPassword()));
+
+        if (passwordEncoder.matches(loginPassword, findMember.get(0).getPassword())){
+            isLogin = 1;
+        }
+
+        return isLogin;
 
     }
 
     @Override
     public int signUpMember(Member signUpMember) {
-        return memberRepository.signUpMember(signUpMember);
+
+        int complete = 0;
+
+        Optional<Member> checkMember = Optional.ofNullable(signUpMember);
+
+        if(checkMember.isPresent()) {
+
+            String encodePassword = passwordEncoder.encode(signUpMember.getPassword());
+            signUpMember.setPassword(encodePassword);
+            signUpMember.setRoleSeq(5); // 일반사용자 셋팅
+
+            log.info("signUpMember = {}, {}", signUpMember.getId(), signUpMember.getEmail());
+
+            complete = memberRepository.save(signUpMember).getSeq();
+
+        }
+
+        return complete;
+
     }
 
 }

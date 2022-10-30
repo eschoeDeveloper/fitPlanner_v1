@@ -227,6 +227,7 @@ export default {
         let respCode = respJson.code;
 
         if(Number(respCode) < 400) {
+          this.$cookies.remove("ssoLogin");
           this.$router.push({ path: '/' });
         }
 

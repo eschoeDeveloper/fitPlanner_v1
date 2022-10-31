@@ -1,77 +1,11 @@
 <template>
-  <header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#"><b>FitPlanner</b></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item mb-2">
-              <a class="dropdown-item" @click="goFitSchedule()">운동 스케줄</a>
-            </li>
-            <li class="nav-item mb-2">
-              <a class="dropdown-item" @click="goFitExercise()">운동 종목</a>
-            </li>
-            <li class="nav-item mb-2">
-              <a class="dropdown-item" @click="goFitFoodDiet()">식단 정보</a>
-            </li>
-            <li>
-              <div class="dropdown-divider"></div>
-            </li>
-            <li class="nav-item mb-2">
-              <a class="dropdown-item" @click="goFitMain()">메인으로</a>
-            </li>
-            <li class="nav-item mb-2">
-              <a class="dropdown-item" @click="goMemberEdit()">회원정보수정</a>
-            </li>
-            <li class="nav-item mb-2">
-              <a class="dropdown-item" @click="goLogOut()">로그아웃</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-  </header>
+  <AppHeader/>
 </template>
 
 <script>
   export default {
     name: "AppFitHealthGym",
     methods: {
-      goFitSchedule() {
-        this.$router.push({ path: '/fitSchedule' });
-      },
-      goFitExercise() {
-        this.$router.push({ path: '/fitExercise' });
-      },
-      goFitMain() {
-        this.$router.push({ path: '/main' });
-      },
-      goFitFoodDiet() {
-        this.$router.push({ path: '/fitFoodDiet' });
-      },
-      goMemberEdit() {
-        this.$router.push({ path: '/fitMemberEdit' });
-      },
-      goLogOut() {
-        this.axios.post("/api/member/logout", JSON.stringify({}), {
-          withCredentials: true,
-        })
-            .then((response) => {
-
-              let respJson = JSON.parse(JSON.stringify(response.data));
-              let respCode = respJson.code;
-
-              if(Number(respCode) < 400) {
-                this.$router.push({ path: '/' });
-              }
-
-            }).catch((error) => {
-          console.log(error);
-        });
-      }
     }
   }
 </script>

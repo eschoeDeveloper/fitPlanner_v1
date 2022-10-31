@@ -1,83 +1,76 @@
 <template>
-  <header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#"><b>FitPlanner</b></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-            <li class="nav-item mb-2">
-              <a class="dropdown-item" @click="goFitExercise()">운동 종목</a>
-            </li>
-            <li class="nav-item mb-2">
-              <a class="dropdown-item" @click="goFitFoodDiet()">식단 정보</a>
-            </li>
-            <li class="nav-item mb-2">
-              <a class="dropdown-item" @click="goFitHealthGym()">추천 헬스장</a>
-            </li>
-            <li>
-              <div class="dropdown-divider"></div>
-            </li>
-            <li class="nav-item mb-2">
-              <a class="dropdown-item" @click="goFitMain()">메인으로</a>
-            </li>
-            <li class="nav-item mb-2">
-              <a class="dropdown-item" @click="goMemberEdit()">회원정보수정</a>
-            </li>
-            <li class="nav-item mb-2">
-              <a class="dropdown-item" @click="goLogOut()">로그아웃</a>
-            </li>
-          </ul>
+  <AppHeader/>
+
+  <section>
+
+    <div class="container mt-3 d-print-inline-block" ref="fitSchedule">
+
+      <h4>운동 스케줄</h4>
+
+      <div class="card w-50 d-print-inline-block">
+        <div class="card-body">
+          <h5 class="card-title">2022.10.31</h5>
+          <p class="card-text">달려라 와드! 크로스핏</p>
+          <a href="#" class="btn btn-primary">상세보기</a>
         </div>
       </div>
-    </nav>
-  </header>
+
+      <div class="card w-50 d-print-inline-block">
+        <div class="card-body">
+          <h5 class="card-title">2022.11.01</h5>
+          <p class="card-text">하체 털기</p>
+          <a href="#" class="btn btn-primary">상세보기</a>
+        </div>
+      </div>
+
+      <div class="card w-50 d-print-inline-block">
+        <div class="card-body">
+          <h5 class="card-title">2022.11.02</h5>
+          <p class="card-text">등 밥주기</p>
+          <a href="#" class="btn btn-primary">상세보기</a>
+        </div>
+      </div>
+
+      <div class="card w-50 d-print-inline-block">
+        <div class="card-body">
+          <h5 class="card-title">2022.11.03</h5>
+          <p class="card-text">이두삼두 키우기</p>
+          <a href="#" class="btn btn-primary">상세보기</a>
+        </div>
+      </div>
+
+      <div class="card w-50 d-print-inline-block">
+        <div class="card-body">
+          <h5 class="card-title">2022.11.04</h5>
+          <p class="card-text">벤치후라쓰</p>
+          <a href="#" class="btn btn-primary">상세보기</a>
+        </div>
+      </div>
+
+      <div class="card w-50 d-print-inline-block">
+        <div class="card-body">
+          <h5 class="card-title">2022.11.05</h5>
+          <p class="card-text">유산소산소</p>
+          <a href="#" class="btn btn-primary">상세보기</a>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
 </template>
 
 <script>
+
   export default {
     name: "AppFitSchedule",
-    methods: {
-      goFitExercise() {
-        this.$router.push({ path: '/fitExercise' });
-      },
-      goFitHealthGym() {
-        this.$router.push({ path: '/fitHealthGym' });
-      },
-      goFitFoodDiet() {
-        this.$router.push({ path: '/fitFoodDiet' });
-      },
-      goFitMain() {
-        this.$router.push({ path: '/main' });
-      },
-      goMemberEdit() {
-        this.$router.push({ path: '/fitMemberEdit' });
-      },
-      goLogOut() {
-        this.axios.post("/api/member/logout", JSON.stringify({}), {
-          withCredentials: true,
-        })
-            .then((response) => {
-
-              let respJson = JSON.parse(JSON.stringify(response.data));
-              let respCode = respJson.code;
-
-              if(Number(respCode) < 400) {
-                this.$router.push({ path: '/' });
-              }
-
-            }).catch((error) => {
-          console.log(error);
-        });
-      }
-    }
+    methods: {}
   }
 
 </script>
 
 <style scoped>
-
+  .card{ display: inline-block; }
 </style>

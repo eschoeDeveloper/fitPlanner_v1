@@ -5,6 +5,7 @@ module.exports = defineConfig({
     transpileDependencies: true,
     lintOnSave : false,
     outputDir:"../src/main/resources/static",
+    assetsDir: './assets',
     configureWebpack: {
       resolve: {
         alias: {

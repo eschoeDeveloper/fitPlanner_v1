@@ -1,7 +1,5 @@
 <template>
 
-  <AppHeader/>
-
   <section>
 
     <div class="container mt-3 d-print-inline-block" ref="fitSchedule">

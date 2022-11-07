@@ -1,5 +1,15 @@
 package com.fitplanner.core.mail;
 
+import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
+import com.amazonaws.services.simpleemail.model.*;
+import com.google.gson.Gson;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import java.util.Map;
+
 /**
  * package     : com.fitplanner.core.mail
  * file        : EmailSendService
@@ -13,44 +23,61 @@ package com.fitplanner.core.mail;
  * =======================================================
  */
 
-//import lombok.RequiredArgsConstructor;
-//import lombok.extern.slf4j.Slf4j;
-//import org.springframework.mail.javamail.JavaMailSender;
-//import org.springframework.mail.javamail.MimeMessageHelper;
-//import org.springframework.stereotype.Component;
-//
-//import javax.mail.internet.MimeMessage;
-
-//@Slf4j
+@Slf4j
 //@Component
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 public class EmailSendComponent {
-
-//    private final JavaMailSender javaMailSender;
 //
-//    public boolean sendMail(boolean isMultipart, boolean isPlainText) {
+//    private final AmazonSimpleEmailService simpleEmailService;
 //
-//        boolean isSend = false;
+//    @Value("${cloud.aws.credentials.from}")
+//    private final String fromEmail;
 //
-//        MimeMessage mimeMailMessage = javaMailSender.createMimeMessage();
+//    private void setTemplate(final String tplName, final Map<String, String> tplData) {
 //
-//        try {
+//        StringBuilder templateHtml = new StringBuilder();
 //
-//            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMailMessage, isMultipart);
-////            mimeMessageHelper.setTo();
-////            mimeMessageHelper.setSubject();
-////            mimeMessageHelper.setText(,isPlainText);
+//        templateHtml.append("<html>");
 //
-//            javaMailSender.send(mimeMailMessage);
+//        templateHtml.append("   <head>");
+//        templateHtml.append("   </head>");
 //
-//            isSend = true;
+//        templateHtml.append("   <body>");
+//        templateHtml.append("       <p>111111</p>");
+//        templateHtml.append("   </body>");
 //
-//        } catch(Exception e) {
-//            e.printStackTrace();
-//            isSend = false;
-//        }
+//        templateHtml.append("</html>");
 //
-//        return isSend;
+//
+//        Template template = new Template();
+//
+//        template.setTemplateName(tplName);
+//        template.setSubjectPart("안녕하세요. FitPlanner 입니다.");
+//        template.setHtmlPart(templateHtml.toString());
+//        template.setTextPart(null);
+//
+//        CreateTemplateRequest request = new CreateTemplateRequest().withTemplate(template);
+//        simpleEmailService.createTemplate(request);
+//
+//    }
+//
+//    public SendTemplatedEmailResult send(final String receiver, final String tplName, final Map<String, String> tplData) {
+//
+//        final String tplDataJsonString = new Gson().toJson(tplData);
+//
+//        Destination destination = new Destination().withToAddresses(receiver);
+//
+//        setTemplate(tplName, tplData);
+//
+//        SendTemplatedEmailRequest emailRequest = new SendTemplatedEmailRequest()
+//                .withDestination(destination)
+//                .withSource(fromEmail)
+//                .withTemplate(tplName)
+//                .withTemplateData(tplDataJsonString);
+//
+//        SendTemplatedEmailResult emailResult = simpleEmailService.sendTemplatedEmail(emailRequest);
+//
+//        return emailResult;
 //
 //    }
 

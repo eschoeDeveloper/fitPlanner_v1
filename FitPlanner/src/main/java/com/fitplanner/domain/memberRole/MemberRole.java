@@ -1,4 +1,4 @@
-package com.fitplanner.domain.common.memberRole;
+package com.fitplanner.domain.memberRole;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

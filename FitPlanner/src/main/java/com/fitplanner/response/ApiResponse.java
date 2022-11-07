@@ -1,4 +1,4 @@
-package com.fitplanner.domain.response;
+package com.fitplanner.response;
 
 import lombok.Data;
 

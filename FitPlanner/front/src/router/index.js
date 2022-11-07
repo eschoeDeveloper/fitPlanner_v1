@@ -1,29 +1,39 @@
 import { createWebHistory, createRouter } from "vue-router"
 
-import AppLogin from "../components/AppLogin.vue";
-import AppSignUp from "../components/AppSignUp.vue";
-import AppPwdReset from "../components/AppPwdReset.vue";
-import AppMain from "../components/AppMain.vue";
-import AppLoginFail from "../components/AppLoginFail.vue";
-import AppFitSchedule from "../components/AppFitSchedule.vue";
-import AppFitExercise from "../components/AppFitExercise.vue";
-import AppFitFoodDiet from "../components/AppFitFoodDiet.vue";
-import AppFitHealthGym from "../components/AppFitHealthGym.vue";
-import AppMemberEdit from "../components/AppMemberEdit.vue";
-import AppSignUpResult from "../components/AppSignUpResult.vue";
+import information from "@/components/information";
+import index from "@/components/index";
+
+import AppLogin from "@/components/member/AppLogin";
+import AppSignUp from "@/components/member/AppSignUp";
+import AppPwdReset from "@/components/member/AppPwdReset";
+import AppMain from "@/components/member/AppMain";
+import AppLoginFail from "@/components/member/AppLoginFail";
+import AppFitSchedule from "@/components/member/AppFitSchedule";
+import AppFitExercise from "@/components/member/AppFitExercise";
+import AppFitFoodDiet from "@/components/member/AppFitFoodDiet";
+import AppFitHealthGym from "@/components/member/AppFitHealthGym";
+import AppMemberEdit from "@/components/member/AppMemberEdit";
+import AppSignUpResult from "@/components/member/AppSignUpResult";
+import AppFitExerciseView from "@/components/member/AppFitExerciseView";
 
 const routes = [
-    { path: "/", name: "AppLogin", component: AppLogin},
-    { path: "/signUp", name: "AppSignUp", component: AppSignUp},
-    { path: "/pwdReset", name: "AppPwdReset", component: AppPwdReset},
-    { path: "/main", name: "AppMain", component: AppMain},
-    { path: "/loginFail", name: "AppLoginFail", component: AppLoginFail},
-    { path: "/fitSchedule", name: "AppFitSchedule", component: AppFitSchedule},
-    { path: "/fitExercise", name: "AppFitExercise", component: AppFitExercise},
-    { path: "/fitFoodDiet", name: "AppFitFoodDiet", component: AppFitFoodDiet},
-    { path: "/fitHealthGym", name: "AppFitHealthGym", component: AppFitHealthGym},
-    { path: "/fitMemberEdit", name: "AppMemberEdit", component: AppMemberEdit},
-    { path: "/signUpResult", name: "AppSignUpResult", component: AppSignUpResult}
+
+    { path: "/", name: "information", component: information},
+    { path: "/index", name: "index", component: index},
+
+    { path: "/member/app", name: "AppLogin", component: AppLogin},
+    { path: "/member/app/signUp", name: "AppSignUp", component: AppSignUp},
+    { path: "/member/app/pwdReset", name: "AppPwdReset", component: AppPwdReset},
+    { path: "/member/app/main", name: "AppMain", component: AppMain},
+    { path: "/member/app/loginFail", name: "AppLoginFail", component: AppLoginFail},
+    { path: "/member/app/fitSchedule", name: "AppFitSchedule", component: AppFitSchedule},
+    { path: "/member/app/fitExercise", name: "AppFitExercise", component: AppFitExercise},
+    { path: "/member/app/fitExerciseView", name: "AppFitExerciseView", component: AppFitExerciseView},
+    { path: "/member/app/fitFoodDiet", name: "AppFitFoodDiet", component: AppFitFoodDiet},
+    { path: "/member/app/fitHealthGym", name: "AppFitHealthGym", component: AppFitHealthGym},
+    { path: "/member/app/fitMemberEdit", name: "AppMemberEdit", component: AppMemberEdit},
+    { path: "/member/app/signUpResult", name: "AppSignUpResult", component: AppSignUpResult},
+
 ]
 
 const router = createRouter({

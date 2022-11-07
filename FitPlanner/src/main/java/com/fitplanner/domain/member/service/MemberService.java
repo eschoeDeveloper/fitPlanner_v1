@@ -5,6 +5,7 @@ import com.fitplanner.domain.member.model.Member;
 import com.fitplanner.domain.member.model.MemberDto;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * package     : com.fitplanner.domain.member.service
@@ -21,10 +22,12 @@ import java.util.List;
 public interface MemberService {
 
     List<Member> findAll();
-    Member findById(int seq);
+    Optional<Member> findById(int seq);
     List<CheckIdMapping> findById(String checkId);
 
     int loginMember(Member findMember);
     int signUpMember(Member insertMember);
+
+    int updateMember(Member updateMember);
 
 }

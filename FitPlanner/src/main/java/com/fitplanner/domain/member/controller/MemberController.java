@@ -3,14 +3,12 @@ package com.fitplanner.domain.member.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fitplanner.domain.member.model.CheckIdMapping;
 import com.fitplanner.domain.member.model.Member;
-import com.fitplanner.domain.member.model.MemberDto;
 import com.fitplanner.domain.member.model.MemberParam;
 import com.fitplanner.domain.member.service.MemberService;
-import com.fitplanner.domain.response.ApiResponse;
+import com.fitplanner.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +16,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.net.URLDecoder;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -42,23 +39,23 @@ public class MemberController {
            HttpServletRequest request
    ) {
 
+       HttpSession httpSession = request.getSession();
+
        ApiResponse apiResponse;
 
        try {
 
            Member findMember = Member.builder().id(memberParam.getId()).password(memberParam.getPassword()).build();
-           int loginMember = memberService.loginMember(findMember);
+           int memberSeq = memberService.loginMember(findMember);
 
            apiResponse = new ApiResponse();
 
-           if(loginMember > 0) {
-
-               HttpSession httpSession = request.getSession();
+           if(memberSeq > 0) {
 
                JSONObject jsonObject = new JSONObject();
-               if(httpSession.getAttribute("ssoLogin") == null) {
-                   jsonObject.put("ssoLogin", "Y");
-               }
+
+               jsonObject.put("ssoLogin", "Y");
+               httpSession.setAttribute("memberSeq", memberSeq);
 
                apiResponse.setMessage(HttpStatus.OK.name());
                apiResponse.setCode(HttpStatus.OK.value());
@@ -68,6 +65,7 @@ public class MemberController {
            } else {
 
                JSONObject jsonObject = new JSONObject();
+
                jsonObject.put("ssoLogin", "N");
 
                apiResponse.setMessage(HttpStatus.INTERNAL_SERVER_ERROR.name());
@@ -152,6 +150,8 @@ public class MemberController {
             HttpServletRequest request
     ) {
 
+        HttpSession httpSession = request.getSession();
+
         ApiResponse apiResponse;
 
         try {
@@ -169,9 +169,7 @@ public class MemberController {
                 String jsonString = mapper.writeValueAsString(signUpMember);
                 JSONObject jsonObject = new JSONObject(jsonString);
 
-                HttpSession httpSession = request.getSession();
-
-                httpSession.setAttribute("loginMember", signUpMember);
+                httpSession.setAttribute("memberSeq", signUpMember.getSeq());
                 jsonObject.put("ssoLogin", "Y");
 
                 apiResponse.setMessage(HttpStatus.OK.name());
@@ -203,6 +201,137 @@ public class MemberController {
 
     }
 
+    /**
+     * 회원정보수정 조회
+     * */
+    @PostMapping(value = "/get", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponse> getMember(
+            HttpServletRequest request
+    ) {
+
+        HttpSession session = request.getSession();
+
+        ApiResponse apiResponse;
+
+        try {
+
+            apiResponse = new ApiResponse();
+
+            log.info("memberSeq = {}", session.getAttribute("memberSeq"));
+
+            if(session.getAttribute("memberSeq") != null && !session.getAttribute("memberSeq").equals("")) {
+
+                String memberSeq = String.valueOf(session.getAttribute("memberSeq"));
+                int convertMemberSeq = Integer.parseInt(memberSeq);
+                Optional<Member> findMember = memberService.findById(convertMemberSeq);
+                Member getMember;
+
+                if(findMember.isPresent()) {
+
+                    getMember = findMember.get();
+
+                    ObjectMapper mapper = new ObjectMapper();
+                    String jsonString = mapper.writeValueAsString(getMember);
+
+                    log.info("findMember = {}", jsonString);
+
+                    JSONObject jsonObject = new JSONObject(jsonString);
+
+                    log.info("findMember = {}", jsonObject.toString());
+
+                    apiResponse.setMessage(HttpStatus.OK.name());
+                    apiResponse.setCode(HttpStatus.OK.value());
+                    apiResponse.setData(jsonObject.toString());
+                    apiResponse.setCount(1);
+
+                } else {
+
+                    apiResponse.setMessage(HttpStatus.INTERNAL_SERVER_ERROR.name());
+                    apiResponse.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+                    apiResponse.setData(new JSONObject());
+                    apiResponse.setCount(0);
+
+                }
+
+            } else {
+
+                apiResponse.setMessage(HttpStatus.INTERNAL_SERVER_ERROR.name());
+                apiResponse.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+                apiResponse.setData(new JSONObject());
+                apiResponse.setCount(0);
+
+            }
+
+        } catch(Exception e) {
+
+            e.printStackTrace();
+
+            apiResponse = new ApiResponse();
+
+            apiResponse.setMessage(e.getLocalizedMessage());
+            apiResponse.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            apiResponse.setCount(0);
+            apiResponse.setData(Collections.emptyMap());
+
+        }
+
+        return ResponseEntity.ok(apiResponse);
+
+    }
+
+    /**
+     * 회원정보수정
+     * */
+    @PostMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponse> updateMember(
+            @RequestBody Member updateMember,
+            HttpServletRequest request
+    ) {
+
+        HttpSession session = request.getSession();
+
+        ApiResponse apiResponse;
+
+        try {
+
+            int isUpdate = memberService.updateMember(updateMember);
+
+            apiResponse = new ApiResponse();
+
+            apiResponse.setCount(isUpdate);
+
+            if(isUpdate > 0) {
+
+                session.invalidate();
+
+                apiResponse.setMessage(HttpStatus.OK.name());
+                apiResponse.setCode(HttpStatus.OK.value());
+                apiResponse.setData("Y");
+
+            } else {
+
+                apiResponse.setMessage(HttpStatus.INTERNAL_SERVER_ERROR.name());
+                apiResponse.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+                apiResponse.setData("N");
+
+            }
+
+        } catch(Exception e) {
+
+            e.printStackTrace();
+
+            apiResponse = new ApiResponse();
+
+            apiResponse.setMessage(e.getLocalizedMessage());
+            apiResponse.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            apiResponse.setCount(0);
+            apiResponse.setData(Collections.emptyMap());
+
+        }
+
+        return ResponseEntity.ok(apiResponse);
+
+    }
 
     /**
      * 로그아웃

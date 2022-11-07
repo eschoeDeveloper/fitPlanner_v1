@@ -30,17 +30,23 @@ spring:
   devtools:
     livereload:
       enabled: true
-#jwt:
-#  header: Authorization
-#  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
-#  token-validity-in-seconds: 86400
+
+
+jwt:
+  header: Authorization
+  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+  token-validity-in-seconds: 86400
 ###################################################################
-#cloud:
-#  aws:
-#    region:
-#      static: ap-northeast-2
-#    stack:
-#      auto: false
+cloud:
+  aws:
+    credentials:
+      from: dev.uschoe@gmail.com
+      accessKey: AKIAUPFWVVYN6QV5YPMI
+      secretKey: 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
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
 ###################################################################
 server:
   port: 7070

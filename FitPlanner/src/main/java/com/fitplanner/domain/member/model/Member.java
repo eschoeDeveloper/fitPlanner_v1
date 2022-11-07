@@ -1,37 +1,23 @@
 package com.fitplanner.domain.member.model;
 
-import com.fitplanner.domain.common.memberRole.MemberRole;
+import com.fitplanner.domain.memberRole.MemberRole;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
-//@SqlResultSetMapping(
-//        name="ProductOrderedMemberMapping",
-//        classes = @ConstructorResult(
-//                targetClass = MemberDto.class,
-//                columns = {
-//                        @ColumnResult(name="seq", type = Integer.class),
-//                        @ColumnResult(name="id", type = String.class),
-//                        @ColumnResult(name="name", type = String.class),
-//                        @ColumnResult(name="phone", type = String.class),
-//                        @ColumnResult(name="age", type = String.class),
-//                        @ColumnResult(name="gender", type = String.class),
-//                        @ColumnResult(name="roleSeq", type = Integer.class),
-//                        @ColumnResult(name="roleNm", type = String.class),
-//                        @ColumnResult(name="roleLevel", type = Integer.class),
-//                })
-//)
 @Data
 @Entity(name="FP_MEMBER")
 @NoArgsConstructor
 // Exclude 어노테이션이 명시된 컬럼만 표시
 @ToString(onlyExplicitlyIncluded = true)
+@DynamicUpdate
 public class Member {
 
-    @ManyToOne(targetEntity = MemberRole.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = MemberRole.class, fetch = FetchType.EAGER)
     @JoinColumns(value = {
        @JoinColumn(name="ROLE_SEQ", referencedColumnName = "ROLE_SEQ", insertable = false, updatable = false)
     })

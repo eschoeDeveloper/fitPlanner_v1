@@ -40,11 +40,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member findById(int seq) {
-
-        String parseSeq = String.valueOf(seq);
-        return memberRepository.findById(String.valueOf(parseSeq)).orElse(null);
-
+    public Optional<Member> findById(int seq) {
+        Optional<Member> findMember = memberRepository.findById(seq);
+        return findMember;
     }
 
     @Override
@@ -53,22 +51,27 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public int loginMember(Member loginMember) {
+    public int loginMember(Member findMember) {
 
-        String loginId = loginMember.getId();
-        String loginPassword = loginMember.getPassword();
+        int memberSeq = 0;
 
-        List<CheckIdMapping> findMember = memberRepository.findMemberById(loginId);
+        String findId = findMember.getId();
+        String checkPassword = findMember.getPassword();
 
-        int isLogin = 0;
+        Optional<Member> loginMember = memberRepository.loginMember(findId);
 
-        log.info("matches = {}" , passwordEncoder.matches(loginPassword, findMember.get(0).getPassword()));
+        if(loginMember.isPresent()) {
 
-        if (passwordEncoder.matches(loginPassword, findMember.get(0).getPassword())){
-            isLogin = 1;
+            log.info("matches = {}", loginMember.toString());
+            log.info("matches = {}", passwordEncoder.matches(checkPassword, loginMember.get().getPassword()));
+
+            if (passwordEncoder.matches(checkPassword, loginMember.get().getPassword())) {
+                memberSeq = loginMember.get().getSeq();
+            }
+
         }
 
-        return isLogin;
+        return memberSeq;
 
     }
 
@@ -95,6 +98,10 @@ public class MemberServiceImpl implements MemberService {
 
     }
 
+    @Override
+    public int updateMember(Member updateMember) {
+        return memberRepository.save(updateMember).getSeq();
+    }
 }
 
 

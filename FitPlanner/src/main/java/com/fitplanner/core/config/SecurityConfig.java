@@ -28,8 +28,8 @@ public class SecurityConfig{
 
         httpse.csrf().disable();		// 개발 시 에만
 
-        httpse.authorizeRequests()
-                .antMatchers("/api/**").authenticated();
+//        httpse.authorizeRequests()
+//                .antMatchers("/api/**").authenticated();
 
         return httpse.build();
 

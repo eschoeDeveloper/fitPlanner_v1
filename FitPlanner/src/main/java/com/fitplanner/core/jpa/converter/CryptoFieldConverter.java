@@ -25,7 +25,7 @@ public class CryptoFieldConverter implements AttributeConverter<String, String> 
 
         String encString = "";
 
-        if(attribute == null || attribute == "") return encString;
+        if(attribute == null || attribute.isEmpty()) return encString;
 
         try {
             encString = CryptoUtil.encryptAES256(attribute);
@@ -43,7 +43,7 @@ public class CryptoFieldConverter implements AttributeConverter<String, String> 
 
         String decString = "";
 
-        if(dbData == null || dbData == "") return decString;
+        if(dbData == null || dbData.isEmpty()) return decString;
 
         try {
             decString = CryptoUtil.decryptAES256(dbData);

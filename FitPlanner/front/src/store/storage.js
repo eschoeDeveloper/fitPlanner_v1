@@ -3,8 +3,7 @@ import { createStore } from "vuex";
 export default createStore({
     state: {
         admin: false,
-        manager: false,
-        user: false,
+        user: false
     },
     getters: {
         getStateValue(state, column) {

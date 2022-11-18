@@ -20,8 +20,9 @@ spring:
   #spring.jpa.hibernate.ddl-auto=validation
   datasource:
     hikari:
-      jdbc-url: "jdbc:sqlite:/Users/choeuiseung/Desktop/fitPlanner/FitPlanner/sqlite/fitplanner.db"
+#      jdbc-url: "jdbc:sqlite:/Users/choeuiseung/Desktop/fitPlanner/FitPlanner/sqlite/fitplanner.db"
       driver-class-name: org.sqlite.JDBC
+      jdbc-url: "jdbc:sqlite:C:/Users/manut/IdeaProjects/fitPlanner/FitPlanner/sqlite/fitplanner.db"
     tomcat:
       max-idle: 20
       min-idle: 15
@@ -31,6 +32,12 @@ spring:
     livereload:
       enabled: true
 
+naver:
+  api:
+    domain: "https://openapi.naver.com"
+    url: "v1/search/local.json"
+    clientId: "8JqXLOELW1yENo_9uyOl"
+    clientSecret: "szMh_s7FP3"
 
 jwt:
   header: Authorization

@@ -21,7 +21,7 @@ const routes = [
     { path: "/", name: "information", component: information},
     { path: "/index", name: "index", component: index},
 
-    { path: "/member/app", name: "AppLogin", component: AppLogin},
+    { path: "/member/app/login", name: "AppLogin", component: AppLogin},
     { path: "/member/app/signUp", name: "AppSignUp", component: AppSignUp},
     { path: "/member/app/pwdReset", name: "AppPwdReset", component: AppPwdReset},
     { path: "/member/app/main", name: "AppMain", component: AppMain},

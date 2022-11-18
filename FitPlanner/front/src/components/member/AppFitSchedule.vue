@@ -6,6 +6,15 @@
 
       <h4>운동 스케줄</h4>
 
+      <div class="form-outline align-co">
+        <button class="btn btn-sm btn-outline-info">스케줄 등록</button>
+      </div>
+
+      <calendar
+          :first-day="1"
+          :all-events="events"
+      ></calendar>
+
       <div class="card w-50 d-print-inline-block">
         <div class="card-body">
           <h5 class="card-title">2022.10.31</h5>
@@ -61,10 +70,19 @@
 </template>
 
 <script>
-
   export default {
     name: "AppFitSchedule",
-    methods: {}
+    data() {
+      return {
+        value: '',
+        context: null
+      }
+    },
+    methods: {
+      onContext(_context) {
+        this.context = _context;
+      }
+    }
   }
 
 </script>

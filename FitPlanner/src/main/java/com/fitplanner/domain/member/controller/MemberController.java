@@ -1,17 +1,24 @@
 package com.fitplanner.domain.member.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fitplanner.core.security.JwtTokenUtil;
+import com.fitplanner.core.security.UserDetailsModel;
 import com.fitplanner.domain.member.model.CheckIdMapping;
 import com.fitplanner.domain.member.model.Member;
 import com.fitplanner.domain.member.model.MemberParam;
 import com.fitplanner.domain.member.service.MemberService;
-import com.fitplanner.response.ApiResponse;
+import com.fitplanner.core.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +28,7 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -28,7 +36,13 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberController {
 
+    private final AuthenticationManager authenticationManager;
+
+    private final PasswordEncoder passwordEncoder;
+
     private final MemberService memberService;
+
+    private final JwtTokenUtil jwtTokenUtil;
 
     /**
      * 로그인
@@ -52,9 +66,25 @@ public class MemberController {
 
            if(memberSeq > 0) {
 
+               Authentication authentication = authenticationManager.authenticate(
+                       new UsernamePasswordAuthenticationToken(memberParam.getId(), memberParam.getPassword()));
+
+               SecurityContextHolder.getContext().setAuthentication(authentication);
+               String jwtToken = jwtTokenUtil.generateJwtToken(authentication);
+
+               UserDetailsModel userDetails = (UserDetailsModel) authentication.getPrincipal();
+
+               log.info("userDetails => {}", userDetails.getUsername());
+
+               List<String> roles = userDetails.getAuthorities().stream()
+                       .map(item -> item.getAuthority())
+                       .collect(Collectors.toList());
+
                JSONObject jsonObject = new JSONObject();
 
                jsonObject.put("ssoLogin", "Y");
+               jsonObject.put("jwtToken", jwtToken);
+
                httpSession.setAttribute("memberSeq", memberSeq);
 
                apiResponse.setMessage(HttpStatus.OK.name());

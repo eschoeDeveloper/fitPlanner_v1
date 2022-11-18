@@ -89,7 +89,7 @@ export default {
       if(this.$cookies.isKey("ssoLogin")) {
 
         if( this.$cookies.get("ssoLogin") === "Y" ) {
-          this.$router.push({ path: '/main' });
+          this.$router.push({ path: '/member/app/main' });
         }
 
       }
@@ -147,9 +147,11 @@ export default {
         this.$cookies.set("ssoLogin", respData["ssoLogin"]);
 
         if(Number(respCode) < 400 ) {
-          this.$router.push({ path: '/main' });
+          this.$router.push({ name: 'AppMain' });
+          this.$store.dispatch("setApiToken", respData["jwtToken"]);
+          this.axios.defaults.headers.common["Authorization"] = "Bearer " + respData["jwtToken"];
         } else if (Number(respCode) >= 400) {
-          this.$router.push({ path: '/loginFail' });
+          this.$router.push({ name: 'AppLoginFail' });
         }
 
       }).catch((error) => {

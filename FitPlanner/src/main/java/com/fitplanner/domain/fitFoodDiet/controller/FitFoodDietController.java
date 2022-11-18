@@ -3,7 +3,7 @@ package com.fitplanner.domain.fitFoodDiet.controller;
 import com.fitplanner.domain.fitFoodDiet.model.FitFoodDietCategory;
 import com.fitplanner.domain.fitFoodDiet.model.FitFoodDietFood;
 import com.fitplanner.domain.fitFoodDiet.service.FitFoodDietService;
-import com.fitplanner.response.ApiResponse;
+import com.fitplanner.core.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

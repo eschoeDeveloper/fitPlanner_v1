@@ -1,7 +1,0 @@
-{
-  "name": "FitPlanner",
-  "dependencies": {
-    "@meforma/vue-toaster": "^1.3.0",
-    "axios": "^1.1.2"
-  }
-}

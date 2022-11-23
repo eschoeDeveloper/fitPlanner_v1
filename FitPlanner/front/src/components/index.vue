@@ -36,27 +36,10 @@ export default {
   methods: {
 
     goAdmin() {
-
-      if(this.$isMobile()) {
-        this.$toast.show("해당 서비스의 접근은 웹 혹은 태블릿에서만 가능합니다.");
-        setTimeout(this.$toast.clear, 3000);
-      } else {
-        this.$router.push({name: "AppLogin"});
-      }
-
+      location.href="http://localhost:8081";
     },
     goUserApp() {
-
-      if(this.$isMobile()) {
-        this.$router.push({name: "AppLogin"});
-      } else {
-        this.$toast.show("해당 서비스의 접근은 모바일에서만 가능합니다.");
-        setTimeout(this.$toast.clear, 3000);
-      }
-
-
-
-
+      this.$router.push({name: "AppLogin"});
     }
 
   }

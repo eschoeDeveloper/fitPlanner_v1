@@ -57,9 +57,7 @@ export default {
 
     getCategoryList() {
 
-      this.axios.get("/api/fitExercise/category/list", {useYn: "Y"}, {
-        withCredentials: true
-      })
+      this.axios.get("/api/fitExercise/category/list?useYn=Y", {})
       .then((response) => {
         let respJson = JSON.parse(JSON.stringify(response.data));
         this.categoryList = JSON.parse(JSON.stringify(respJson.data));
@@ -73,9 +71,7 @@ export default {
       let categoryIdx = this.exerciseCategory;
       console.log(categoryIdx);
 
-      this.axios.post("/api/fitExercise/list", {categoryIdx: categoryIdx, useYn: "Y"}, {
-        withCredentials: true
-      })
+      this.axios.post("/api/fitExercise/list", {categoryIdx: categoryIdx, useYn: "Y"}, {})
       .then((response) => {
         let respJson = JSON.parse(JSON.stringify(response.data));
         this.exerciseList = JSON.parse(JSON.stringify(respJson.data));

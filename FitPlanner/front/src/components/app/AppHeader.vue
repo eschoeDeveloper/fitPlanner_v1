@@ -44,22 +44,22 @@ export default {
   name: "AppHeader",
   methods: {
     goFitSchedule() {
-      this.$router.push({ path: '/member/app/fitSchedule' });
+      this.$router.push({ path: '/app/fitSchedule' });
     },
     goFitExercise() {
-      this.$router.push({ path: '/member/app/fitExercise' });
+      this.$router.push({ path: '/app/fitExercise' });
     },
     goFitHealthGym() {
-      this.$router.push({ path: '/member/app/fitHealthGym' });
+      this.$router.push({ path: '/app/fitHealthGym' });
     },
     goFitFoodDiet() {
-      this.$router.push({ path: '/member/app/fitFoodDiet' });
+      this.$router.push({ path: '/app/fitFoodDiet' });
     },
     goMemberEdit() {
-      this.$router.push({ path: '/member/app/fitMemberEdit' });
+      this.$router.push({ path: '/app/fitMemberEdit' });
     },
     goFitMain() {
-      this.$router.push({ path: '/member/app/main' });
+      this.$router.push({ path: '/app/main' });
     },
     goLogOut() {
 
@@ -74,7 +74,7 @@ export default {
         if(Number(respCode) < 400) {
           this.$cookies.remove("ssoLogin");
           this.$store.dispatch("resetApiToken");
-          this.$router.push({ path: '/member/app/login' });
+          this.$router.push({ path: '/app/login' });
         }
 
       }).catch((error) => {

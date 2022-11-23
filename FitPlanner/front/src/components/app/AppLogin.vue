@@ -135,14 +135,14 @@ export default {
         password: checkPwd
       });
 
-      this.axios.post("/api/member/login", JSONData, {
-        withCredentials: true,
-      })
+      this.axios.post("/api/member/login", JSONData, {})
       .then((response) => {
 
         let respJson = JSON.parse(JSON.stringify(response.data));
         let respData = JSON.parse(respJson.data);
         let respCode = respJson.code;
+
+        console.log(respData);
 
         this.$cookies.set("ssoLogin", respData["ssoLogin"]);
 

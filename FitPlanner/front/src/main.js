@@ -2,23 +2,21 @@ import { createApp } from 'vue';
 import VueCookies from 'vue-cookies';
 import VueMobileDetection from 'vue-mobile-detection';
 import Toaster from '@meforma/vue-toaster';
-import axios from 'axios';
+import axios from "@/plugins/axios";
 import App from '@/App.vue';
-import AppHeader from "@/components/member/AppHeader";
-import router from '@/router/index';
-import store from '@/store/storage';
+import AppHeader from "@/components/app/AppHeader";
+import router from '@/router/router';
+import store from '@/store/store';
+import {BootstrapVue3} from "bootstrap-vue-3";
 
 import 'es6-promise/auto';
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap";
+import "bootstrap"
 import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue-3/dist/bootstrap-vue-3.css';
-
-axios.defaults.headers.get["Content-Type"] = "application/json";
-axios.defaults.headers.post["Content-Type"] = "application/json";
-axios.defaults.headers.put["Content-Type"] = "application/json";
+import 'bootstrap-vue-3/dist/bootstrap-vue-3.css'
 
 const fitPlannerApp = createApp(App);
+
+fitPlannerApp.config.productionTip = false;
 
 fitPlannerApp.component("AppHeader", AppHeader);
 fitPlannerApp.config.globalProperties.axios = axios;
@@ -33,4 +31,5 @@ fitPlannerApp.use(router);
 fitPlannerApp.use(Toaster);
 fitPlannerApp.use(store);
 fitPlannerApp.use(VueMobileDetection);
-fitPlannerApp.mount("#app");
+fitPlannerApp.use(BootstrapVue3);
+fitPlannerApp.mount('#app')

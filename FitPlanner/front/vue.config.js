@@ -21,5 +21,13 @@ module.exports = defineConfig({
         },
         proxy: "http://localhost:7070/",
         hot: true
+    },
+    pluginOptions: {
+        i18n: {
+            locale: 'fr',
+            fallbackLocale: 'en',
+            localeDir: 'assets/locales',
+            enableInSFC: true
+        }
     }
 })

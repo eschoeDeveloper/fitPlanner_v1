@@ -64,7 +64,7 @@ export default {
       const respCode = this.$route.params.respCode;
 
       if(respCode <= 300 ){
-        this.$router.push({path:"/member/app/main"});
+        this.$router.push({path:"/app/main"});
       } else if(respCode > 301){
         this.$toast.show("서버에 오류가 발생하여 회원가입을 실패하였습니다.\n오류가 지속되면 고객센터에 문의하여 주세요.");
         setTimeout(() => {

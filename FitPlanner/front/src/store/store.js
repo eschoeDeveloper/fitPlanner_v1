@@ -4,7 +4,10 @@ export default createStore({
     state: {
         admin: false,
         user: false,
-        apiToken: null
+        apiToken: null,
+        barColor: 'rgba(0, 0, 0, .8), rgba(0, 0, 0, .8)',
+        barImage: 'https://demos.creative-tim.com/material-dashboard/assets/img/sidebar-1.jpg',
+        drawer: null
     },
     getters: {
         getStateValue(state, column) {
@@ -20,8 +23,13 @@ export default createStore({
         },
         resetApiToken(state) {
             state.apiToken = null;
-            //this.axios.defaults.headers.common["Authorization"] = null;
-        }
+        },
+        SET_BAR_IMAGE (state, payload) {
+            state.barImage = payload
+        },
+        SET_DRAWER (state, payload) {
+            state.drawer = payload
+        },
     },
     actions: { // dispatch 로 부를 수 있다.
         setApiToken:({commit} , _apiToken) => {

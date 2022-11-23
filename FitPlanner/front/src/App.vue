@@ -20,6 +20,7 @@ export default {
       isHeader : false
     }
   },
+  compatConfig: { MODE: 3 },
   watch: {
     $route(to, from) {
 
@@ -29,6 +30,7 @@ export default {
         this.$refs.appHeader.$refs.navbarSupportedContent.classList.remove("show");
 
         if(
+            to.path.indexOf("index") < 0 &&
             to.path.indexOf("login") < 0 &&
             to.path.indexOf("signUp") < 0 &&
             to.path.indexOf("pwdReset") < 0 &&

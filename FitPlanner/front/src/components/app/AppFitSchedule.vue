@@ -6,6 +6,23 @@
 
       <h4>운동 스케줄</h4>
 
+      <div>
+
+        <b-row>
+          <b-col md="auto">
+            <b-calendar v-model="value" @context="onContext" locale="en-US"></b-calendar>
+          </b-col>
+          <b-col>
+            <p>Value: <b>'{{ value }}'</b></p>
+            <p class="mb-0">Context:</p>
+            <pre class="small">{{ context }}</pre>
+          </b-col>
+        </b-row>
+
+      </div>
+
+
+
       <div class="form-outline align-co">
         <button class="btn btn-sm btn-outline-info">스케줄 등록</button>
       </div>
@@ -70,6 +87,7 @@
 </template>
 
 <script>
+
   export default {
     name: "AppFitSchedule",
     data() {
@@ -78,9 +96,10 @@
         context: null
       }
     },
+    compatConfig: { MODE: 3 },
     methods: {
-      onContext(_context) {
-        this.context = _context;
+      onContext(ctx) {
+        this.context = ctx
       }
     }
   }

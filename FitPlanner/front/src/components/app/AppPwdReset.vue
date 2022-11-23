@@ -14,7 +14,7 @@
 
                 <div class="form-outline mb-4">
                   <label class="form-label" for="inputEmail">이메일</label>
-                  <input type="email" ref="inputEmail"  name="inputEmail" id="inputEmail" class="form-control" :placeholder="placeholderPhone"/>
+                  <input type="email" ref="inputEmail"  name="inputEmail" id="inputEmail" class="form-control" :placeholder="placeholderEmail"/>
                   <p ref="emailGuide" style="display:none; color: red; font-size: 9px;">이메일을 입력해주세요.</p>
                 </div>
 
@@ -34,51 +34,48 @@
 </template>
 
 <script>
-import axios from "axios";
 
-import "bootstrap/dist/css/bootstrap.min.css"
-
-// axios.defaults.headers.get["Content-Type"] = "application/json";
-axios.defaults.headers.post["Content-Type"] = "application/json";
-// axios.defaults.headers.put["Content-Type"] = "application/json";
-
-export default {
-  name: "AppPwdReset.vue",
-  data() {
-    return {
-      placeholderPhone: "Enter Input PhoneNumber"
-    }
-  },
-  methods: {
-    goPwdReset() {
-
-      const inputEmail = this.$refs.inputEmail.value;
-
-      if(!inputEmail) this.$refs.emailGuide.style.display = "block";
-      else this.$refs.emailGuide.style.display = "none";
-
-      const JsonData = JSON.stringify(
-          {
-            email : inputEmail
-          }
-      );
-
-      axios.post("/api/member/pwdReset", JsonData, {
-        withCredentials: true,
-      })
-          .then((response) => {
-
-
-          }).catch((error) => {
-        console.log(error);
-      });
-
+  export default {
+    name: "AppPwdReset.vue",
+    data() {
+      return {
+        placeholderEmail: "Enter Sign In Input Email"
+      }
     },
-    goLogIn() {
-      this.$router.push({ path: '/' });
+    methods: {
+      goPwdReset() {
+
+        const inputEmail = this.$refs.inputEmail.value;
+
+        if(!inputEmail) {
+          this.$refs.emailGuide.style.display = "block";
+          return false;
+        } else {
+          this.$refs.emailGuide.style.display = "none";
+        }
+
+        const JsonData = JSON.stringify(
+            {
+              email : inputEmail
+            }
+        );
+
+        this.axios.post("/api/member/pwdReset", JsonData, {
+          withCredentials: true,
+        })
+        .then((response) => {
+          console.log(response);
+        }).catch((error) => {
+          console.log(error);
+        });
+
+      },
+      goLogIn() {
+        this.$router.push({ path: '/' });
+      }
     }
   }
-}
+
 </script>
 
 <style scoped>

@@ -1,0 +1,59 @@
+{
+    "labels": {
+        "rememberMe": "아이디 저장",
+        "signIn": "로그인",
+        "signInUsingFB": "Facebook으로 로그인",
+        "signUpUsingFB": "Facebook으로 가입",
+        "SignInUsingGoogle": "Google로 로그인",
+        "signUpUsingGoogle": "Google로 가입",
+        "forgotPassword": "비밀번호 찾기",
+        "console": "FitPlanner",
+        "role": "관리자",
+        "login": "Login",
+        "loading": "로딩중...",
+        "copyright": "Copyright",
+        "allRightReserved": "All rights reserved",
+        "version": "Version",
+        "seeAllNotification": "모든 알림보기",
+        "notifications": "알림",
+        "newMessages": "새 메시지",
+        "mins": "분",
+        "hours": "시",
+        "days": "일",
+        "friendRequests": "friend requests",
+        "newReports": "new reports",
+        "profile": "Profile",
+        "followers": "Followers",
+        "sales": "Sales",
+        "friends": "Friends",
+        "signOut": "Sign out",
+        "memberSince": "Member since",
+        "home": "Home",
+        "contact": "Contact",
+        "dashboard": "Dashboard",
+        "blank": "Blank",
+        "mainMenu": "Main menu",
+        "subMenu": "Sub menu",
+        "privacyPolicy": "Privacy Policy",
+        "iAgree": "I agree to the",
+        "terms": "terms",
+        "register": "Register",
+        "alreadyHaveMembership": "I already have a membership",
+        "userProfile": "User Profile"
+    },
+    "messages": {
+        "retrieveNewPassword": "You forgot your password? Here you can easily retrieve a new password.",
+        "recoverYourPasswordNow": "You are only one step a way from your new password, recover your password now."
+    },
+    "buttons": {
+        "requestNewPassword": "새 비밀번호 입력"
+    },
+    "languages": {
+        "korean" : "한국어",
+        "english": "영어",
+        "german": "독일어",
+        "french": "프랑스어",
+        "spanish": "스페인어",
+        "turkish": "터키어"
+    }
+}

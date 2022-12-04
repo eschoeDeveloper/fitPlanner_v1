@@ -26,13 +26,16 @@
     "eslint-config-vuetify": "^0.2.0",
     "eslint-plugin-vue": "^9.7.0",
     "nuxt": "^2.13.3",
+    "ts-node": "^10.9.1",
     "vue": "^3.2.45",
     "vue-compat": "^0.0.1",
     "vue-cookies": "^1.8.1",
     "vue-mobile-detection": "^2.0.1",
     "vue-router": "^4.0.13",
     "vue3-cookies": "^1.0.6",
-    "vuex": "^4.1.0"
+    "vue3-datepicker": "^0.3.4",
+    "vuex": "^4.1.0",
+    "yarn": "^1.22.19"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
@@ -64,5 +67,7 @@
     "last 2 versions",
     "not dead",
     "not ie 11"
-  ]
+  ],
+  "main": "index.js",
+  "license": "MIT"
 }

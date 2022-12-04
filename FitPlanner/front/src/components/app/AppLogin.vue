@@ -1,9 +1,13 @@
 <template>
 
   <section class="h-100 h-custom" style="background-color: #8fc4b7;">
+
     <div class="container h-100">
+
       <div class="row d-flex justify-content-center align-items-center h-100">
+
         <div class="col-md-8">
+
           <div class="card rounded-3">
             <img src="../../assets/image/fitPlanner_logo.png"
                  class="w-100" style="border-top-left-radius: .3rem; border-top-right-radius: .3rem;"
@@ -48,14 +52,17 @@
               </form>
 
             </div>
+
           </div>
+
         </div>
+
       </div>
+
     </div>
+
   </section>
 
-
-  <!-- Section: Design Block -->
 </template>
 
 <script>
@@ -69,10 +76,13 @@ export default {
     }
   },
   mounted() {
+
     window.addEventListener("load", () => {
-      console.log("mounted = {}", this.$root.$data.isHeader);
       this.setLoginIdByCookie();
+      window.screen.availWidth = 415;
+      window.screen.availHeight = 740;
     });
+
   },
   created() {
     this.$root.$data.isHeader = false;
@@ -89,7 +99,7 @@ export default {
       if(this.$cookies.isKey("ssoLogin")) {
 
         if( this.$cookies.get("ssoLogin") === "Y" ) {
-          this.$router.push({ path: '/member/app/main' });
+          this.$router.push({ path: '/app/main' });
         }
 
       }
@@ -101,10 +111,10 @@ export default {
 
     },
     goSignUp() {
-      this.$router.push({ path: '/signUp' });
+      this.$router.push({ path: '/app/signUp' });
     },
     goPwdReset() {
-      this.$router.push({ path: '/pwdReset' });
+      this.$router.push({ path: '/app/pwdReset' });
     },
     goLogIn() {
 

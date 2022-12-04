@@ -9,12 +9,14 @@ import AppPwdReset from "@/components/app/AppPwdReset";
 import AppMain from "@/components/app/AppMain";
 import AppLoginFail from "@/components/app/AppLoginFail";
 import AppFitSchedule from "@/components/app/AppFitSchedule";
+import AppFitScheduleForm from "@/components/app/AppFitScheduleForm";
+import AppFitScheduleView from "@/components/app/AppFitScheduleView";
 import AppFitExercise from "@/components/app/AppFitExercise";
+import AppFitExerciseView from "@/components/app/AppFitExerciseView";
 import AppFitFoodDiet from "@/components/app/AppFitFoodDiet";
 import AppFitHealthGym from "@/components/app/AppFitHealthGym";
 import AppMemberEdit from "@/components/app/AppMemberEdit";
 import AppSignUpResult from "@/components/app/AppSignUpResult";
-import AppFitExerciseView from "@/components/app/AppFitExerciseView";
 
 const routes = [
 
@@ -27,6 +29,8 @@ const routes = [
     { path: "/app/main", name: "AppMain", component: AppMain},
     { path: "/app/loginFail", name: "AppLoginFail", component: AppLoginFail},
     { path: "/app/fitSchedule", name: "AppFitSchedule", component: AppFitSchedule},
+    { path: "/app/fitScheduleForm", name: "AppFitScheduleForm", component: AppFitScheduleForm},
+    { path: "/app/fitScheduleView", name: "AppFitScheduleView", component: AppFitScheduleView},
     { path: "/app/fitExercise", name: "AppFitExercise", component: AppFitExercise},
     { path: "/app/fitExerciseView", name: "AppFitExerciseView", component: AppFitExerciseView},
     { path: "/app/fitFoodDiet", name: "AppFitFoodDiet", component: AppFitFoodDiet},

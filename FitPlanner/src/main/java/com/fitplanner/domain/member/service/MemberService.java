@@ -24,6 +24,7 @@ public interface MemberService {
     List<Member> findAll();
     Optional<Member> findById(int seq);
     List<CheckIdMapping> findById(String checkId);
+    Optional<Member> checkEmail(String email);
 
     int loginMember(Member findMember);
     int signUpMember(Member insertMember);

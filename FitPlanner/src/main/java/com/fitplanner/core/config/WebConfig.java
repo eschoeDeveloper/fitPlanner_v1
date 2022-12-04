@@ -16,7 +16,8 @@ import javax.servlet.Filter;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    public static final String ALLOWED_METHOD_NAMES = "GET,HEAD,POST,PUT,DELETE,TRACE,OPTIONS,PATCH";
+    //public static final String ALLOWED_METHOD_NAMES = "GET,HEAD,POST,PUT,DELETE,TRACE,OPTIONS,PATCH";
+    public static final String ALLOWED_METHOD_NAMES = "GET,POST";
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -58,15 +59,22 @@ public class WebConfig implements WebMvcConfigurer {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
 
+        String[] allowedMethods = ALLOWED_METHOD_NAMES.split(",");
+
         /** CrossOrigin 허용 */
         config.addAllowedOrigin("*");
         config.addAllowedHeader("*");
 
-        /** POST,GET,HEAD,OPTIONS Allowed */
-        config.addAllowedMethod(HttpMethod.HEAD);
-        config.addAllowedMethod(HttpMethod.OPTIONS);
-        config.addAllowedMethod(HttpMethod.POST);
-        config.addAllowedMethod(HttpMethod.GET);
+//        /** POST,GET,HEAD,OPTIONS Allowed */
+//        config.addAllowedMethod(HttpMethod.HEAD);
+//        config.addAllowedMethod(HttpMethod.OPTIONS);
+//        config.addAllowedMethod(HttpMethod.POST);
+//        config.addAllowedMethod(HttpMethod.GET);
+//
+
+        for(String allowMethod : allowedMethods) {
+            config.addAllowedMethod(HttpMethod.valueOf(allowMethod));
+        }
 
         source.registerCorsConfiguration("/**", config);
 

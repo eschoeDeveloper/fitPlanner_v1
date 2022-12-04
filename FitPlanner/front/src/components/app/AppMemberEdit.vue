@@ -5,7 +5,7 @@
     <div class="container mt-4">
 
       <form>
-<!--        <div>{{memberInfo}}</div>-->
+
         <div class="form-row">
           <div class="form-group col-md-12">
             <label for="inputId">아이디</label>
@@ -59,6 +59,7 @@
         </div>
 
         <button type="button" class="btn btn-primary mt-4" @click="">저장</button>
+
       </form>
 
     </div>

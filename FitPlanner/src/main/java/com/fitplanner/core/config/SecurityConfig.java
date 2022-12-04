@@ -35,9 +35,13 @@ public class SecurityConfig{
     public SecurityFilterChain filterChain(HttpSecurity httpse) throws Exception {
 
         httpse.cors().and().csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(authenticationEntryPointJwt).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/api/**").authenticated()
+                .exceptionHandling().authenticationEntryPoint(authenticationEntryPointJwt)
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                    .antMatchers("/api/admin").hasAnyAuthority("1","2","3")
+                    .antMatchers("/api/member").hasAnyAuthority("4","5")
                 .anyRequest().authenticated();
 
         httpse.authenticationProvider(authProvider());
@@ -55,7 +59,8 @@ public class SecurityConfig{
                "/api/member/login",
                "/api/member/signup",
                "/api/member/checkId/**",
-               "/api/member/auth"
+               "/api/member/auth",
+               "/api/admin/login"
             );
         });
 

@@ -2,11 +2,11 @@ package com.fitplanner.domain.member.service;
 
 import com.fitplanner.domain.member.model.CheckIdMapping;
 import com.fitplanner.domain.member.model.Member;
-import com.fitplanner.domain.member.model.MemberDto;
 import com.fitplanner.domain.member.repository.MemberRepository;
+import com.fitplanner.domain.member.repository.specification.MemberSpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +46,12 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public Optional<Member> checkEmail(String email) {
+        Specification<Member> specification = Specification.where(MemberSpecification.checkEmail(email));
+        return memberRepository.findOne(specification);
+    }
+
+    @Override
     public List<CheckIdMapping> findById(String checkId) {
         return memberRepository.findMemberById(checkId);
     }
@@ -62,8 +68,8 @@ public class MemberServiceImpl implements MemberService {
 
         if(loginMember.isPresent()) {
 
-            log.info("matches = {}", loginMember.toString());
-            log.info("matches = {}", passwordEncoder.matches(checkPassword, loginMember.get().getPassword()));
+//            log.info("matches = {}", loginMember.toString());
+//            log.info("matches = {}", passwordEncoder.matches(checkPassword, loginMember.get().getPassword()));
 
             if (passwordEncoder.matches(checkPassword, loginMember.get().getPassword())) {
                 memberSeq = loginMember.get().getSeq();

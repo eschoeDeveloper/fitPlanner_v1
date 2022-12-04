@@ -1,3 +1,4 @@
+
 <template>
 
   <section>
@@ -6,77 +7,21 @@
 
       <h4>운동 스케줄</h4>
 
-      <div>
-
-        <b-row>
-          <b-col md="auto">
-            <b-calendar v-model="value" @context="onContext" locale="en-US"></b-calendar>
-          </b-col>
-          <b-col>
-            <p>Value: <b>'{{ value }}'</b></p>
-            <p class="mb-0">Context:</p>
-            <pre class="small">{{ context }}</pre>
-          </b-col>
-        </b-row>
-
-      </div>
-
-
-
-      <div class="form-outline align-co">
-        <button class="btn btn-sm btn-outline-info">스케줄 등록</button>
-      </div>
-
-      <calendar
-          :first-day="1"
-          :all-events="events"
-      ></calendar>
-
-      <div class="card w-50 d-print-inline-block">
-        <div class="card-body">
-          <h5 class="card-title">2022.10.31</h5>
-          <p class="card-text">달려라 와드! 크로스핏</p>
-          <a href="#" class="btn btn-primary">상세보기</a>
+      <div class="form-row">
+        <div class="col-md-5">
+          <Datepicker ref="toDt" id="toDt" v-model="toDt" @change="getScheduleList"/>
         </div>
       </div>
 
-      <div class="card w-50 d-print-inline-block">
-        <div class="card-body">
-          <h5 class="card-title">2022.11.01</h5>
-          <p class="card-text">하체 털기</p>
-          <a href="#" class="btn btn-primary">상세보기</a>
-        </div>
+      <div class="form-row mt-2 mb-2">
+        <button class="btn btn-sm btn-outline-info" @click="createSchedule()">스케줄 등록</button>
       </div>
 
-      <div class="card w-50 d-print-inline-block">
+      <div class="card w-50 d-print-inline-block" :key="i" v-for="(_schedule, i) in scheduleList">
         <div class="card-body">
-          <h5 class="card-title">2022.11.02</h5>
-          <p class="card-text">등 밥주기</p>
-          <a href="#" class="btn btn-primary">상세보기</a>
-        </div>
-      </div>
-
-      <div class="card w-50 d-print-inline-block">
-        <div class="card-body">
-          <h5 class="card-title">2022.11.03</h5>
-          <p class="card-text">이두삼두 키우기</p>
-          <a href="#" class="btn btn-primary">상세보기</a>
-        </div>
-      </div>
-
-      <div class="card w-50 d-print-inline-block">
-        <div class="card-body">
-          <h5 class="card-title">2022.11.04</h5>
-          <p class="card-text">벤치후라쓰</p>
-          <a href="#" class="btn btn-primary">상세보기</a>
-        </div>
-      </div>
-
-      <div class="card w-50 d-print-inline-block">
-        <div class="card-body">
-          <h5 class="card-title">2022.11.05</h5>
-          <p class="card-text">유산소산소</p>
-          <a href="#" class="btn btn-primary">상세보기</a>
+          <h5 class="card-title">{{_schedule.scheduleDt}}</h5>
+          <p class="card-text">{{_schedule.scheduleTitle}}</p>
+          <button class="btn btn-primary" @click="goScheduleView(_schedule.scheduleNo)">상세보기</button>
         </div>
       </div>
 
@@ -88,19 +33,52 @@
 
 <script>
 
+  import Datepicker from 'vue3-datepicker'
+
   export default {
     name: "AppFitSchedule",
+    components: {
+      Datepicker
+    },
     data() {
       return {
         value: '',
-        context: null
+        toDt: new Date(),
+        scheduleList : []
       }
     },
-    compatConfig: { MODE: 3 },
     methods: {
-      onContext(ctx) {
-        this.context = ctx
+
+      getScheduleList() {
+
+        console.log(this.toDt);
+
+        const isToDt = (this.$refs.toDt) ? this.$refs.toDt : this.toDt;
+
+        const fromDt = this.toDt.getFullYear() + "-" + (this.toDt.getMonth()+1) + "-" + (this.toDt.getDate()-7);
+        const toDt = this.toDt.toISOString().slice(0,10);
+
+        this.axios.post("/api/fitSchedule/list", {fromDt: fromDt, toDt: toDt}, {})
+        .then((response) => {
+          console.log(response);
+          let respJson = JSON.parse(JSON.stringify(response.data));
+          this.scheduleList = JSON.parse(JSON.stringify(respJson.data));
+        }).catch((error) => {
+          console.log(error);
+        });
+
+      },
+      createSchedule() {
+        this.$router.push({name: "AppFitScheduleForm"});
+      },
+      goScheduleView(scheduleNo) {
+        this.$router.push({name: "AppFitScheduleView", params: {scheduleNo: scheduleNo}});
       }
+
+    },
+    compatConfig: { MODE: 3 },
+    created() {
+      this.getScheduleList();
     }
   }
 

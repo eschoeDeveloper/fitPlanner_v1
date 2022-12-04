@@ -1,6 +1,5 @@
 package com.fitplanner.domain.member.model;
 
-import com.fitplanner.domain.memberRole.MemberRole;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;

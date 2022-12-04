@@ -7,58 +7,36 @@
         <h4>운동 스케줄</h4>
         <h6>준비중입니다.</h6>
 
-<!--          <div class="card w-50 d-print-inline-block">-->
-<!--            <div class="card-body">-->
-<!--              <h5 class="card-title">2022.10.31</h5>-->
-<!--              <p class="card-text">달려라 와드! 크로스핏</p>-->
-<!--              <a href="#" class="btn btn-primary">상세보기</a>-->
-<!--            </div>-->
-<!--          </div>-->
+        <div id="carouselSchedule" class="carousel carousel-dark slide" data-bs-ride="carousel">
 
-<!--        <div class="card w-50 d-print-inline-block">-->
-<!--          <div class="card-body">-->
-<!--            <h5 class="card-title">2022.11.01</h5>-->
-<!--            <p class="card-text">하체 털기</p>-->
-<!--            <a href="#" class="btn btn-primary">상세보기</a>-->
-<!--          </div>-->
-<!--        </div>-->
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselSchedule" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          </div>
 
-<!--        <div class="card w-50 d-print-inline-block">-->
-<!--          <div class="card-body">-->
-<!--            <h5 class="card-title">2022.11.02</h5>-->
-<!--            <p class="card-text">등 밥주기</p>-->
-<!--            <a href="#" class="btn btn-primary">상세보기</a>-->
-<!--          </div>-->
-<!--        </div>-->
+          <div class="carousel-inner">
 
-<!--        <div class="card w-50 d-print-inline-block">-->
-<!--          <div class="card-body">-->
-<!--            <h5 class="card-title">2022.11.03</h5>-->
-<!--            <p class="card-text">이두삼두 키우기</p>-->
-<!--            <a href="#" class="btn btn-primary">상세보기</a>-->
-<!--          </div>-->
-<!--        </div>-->
+            <div class="carousel-item" :class="{'active': i == 0}" :key="i" v-for="(_schedule, i) in scheduleList" data-bs-interval="3000">
+              <img src="../assets/image/logo.png" class="d-block w-100" alt="...">
+              <div class="carousel-caption d-none d-md-block">
+                <h5>First slide label</h5>
+                <p>Some representative placeholder content for the first slide.</p>
+                <button class="btn btn-primary" @click="goScheduleView(_schedule.scheduleNo)">상세보기</button>
+              </div>
+            </div>
 
-<!--        <div class="card w-50 d-print-inline-block">-->
-<!--          <div class="card-body">-->
-<!--            <h5 class="card-title">2022.11.04</h5>-->
-<!--            <p class="card-text">벤치후라쓰</p>-->
-<!--            <a href="#" class="btn btn-primary">상세보기</a>-->
-<!--          </div>-->
-<!--        </div>-->
+          </div>
 
-<!--        <div class="card w-50 d-print-inline-block">-->
-<!--          <div class="card-body">-->
-<!--            <h5 class="card-title">2022.11.05</h5>-->
-<!--            <p class="card-text">유산소산소</p>-->
-<!--            <a href="#" class="btn btn-primary">상세보기</a>-->
-<!--          </div>-->
-<!--        </div>-->
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselSchedule" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselSchedule" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
 
-      </div>
+        </div>
 
-      <div class="container" ref="noFitSchedule" style="display: none;">
-        <h3>등록된 운동 스케줄이 없습니다.</h3>
       </div>
 
       <hr class="hr hr-blurry">
@@ -112,10 +90,6 @@
 
     </div>
 
-    <div class="container mt-3" ref="noFitFood" style="display: none;">
-      <h4>등록된 운동 스케줄이 없습니다.</h4>
-    </div>
-
     <hr class="hr hr-blurry">
 
     <div class="container mt-3" ref="fitHealthGym">
@@ -166,10 +140,6 @@
 
     </div>
 
-    <div class="container mt-3" ref="noFitHealthGym" style="display: none;">
-      <h3>추천 헬스장 정보가 없습니다.</h3>
-    </div>
-
   </section>
 
 </template>
@@ -178,14 +148,26 @@
 
 export default {
   name: "AppMain",
+  data: {
+    scheduleList: []
+  }
   mounted() {
+
+    this.getMainDataList();
+
     this.$root.$data.isHeader = true;
     this.$toast.show("안녕하세요 회원님!\n오늘도 즐거운 운동되시고 건강 조심하세요!");
     setTimeout(this.$toast.clear, 3000);
+
   },
   methods: {
 
+    getMainDataList() {
+
+    }
+
   }
+
 }
 </script>
 

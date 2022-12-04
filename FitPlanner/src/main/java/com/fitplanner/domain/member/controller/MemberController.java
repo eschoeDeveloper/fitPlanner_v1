@@ -1,6 +1,10 @@
 package com.fitplanner.domain.member.controller;
 
+import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
+import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClient;
+import com.amazonaws.services.simpleemail.model.SendTemplatedEmailResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fitplanner.core.mail.EmailSendComponent;
 import com.fitplanner.core.security.JwtTokenUtil;
 import com.fitplanner.core.security.UserDetailsModel;
 import com.fitplanner.domain.member.model.CheckIdMapping;
@@ -24,10 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.nio.charset.Charset;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -389,6 +390,149 @@ public class MemberController {
             e.printStackTrace();
 
             apiResponse = new ApiResponse();
+
+            apiResponse.setMessage(e.getLocalizedMessage());
+            apiResponse.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            apiResponse.setCount(0);
+            apiResponse.setData(Collections.emptyMap());
+
+        }
+
+        return ResponseEntity.ok(apiResponse);
+
+    }
+
+    @PostMapping(value = "/pwdReset", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponse> memberPwdReset(
+            @RequestBody Member member,
+            HttpServletRequest request
+    ) {
+
+        long authNo = System.currentTimeMillis();
+
+        ApiResponse apiResponse = new ApiResponse();
+
+        try {
+
+            HttpSession session = request.getSession();
+
+            Optional<Member> checkMember = memberService.checkEmail(member.getEmail());
+
+            if(checkMember.isPresent()) {
+
+                Map<String, Object> tplData = new HashMap<>();
+                tplData.put("authNo", authNo);
+
+                EmailSendComponent emailSendComponent = new EmailSendComponent();
+                SendTemplatedEmailResult result = emailSendComponent.send(member.getEmail(), "pwdReset", tplData);
+
+                if (result.getMessageId() != null && result.getMessageId() != "") {
+
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("isNext", "Y");
+
+                    apiResponse.setMessage(HttpStatus.OK.name());
+                    apiResponse.setCode(HttpStatus.OK.value());
+                    apiResponse.setCount(0);
+                    apiResponse.setData(jsonObject.toString());
+
+                    session.setAttribute("matchResetAuthNo", authNo);
+
+                }
+
+            } else {
+
+                apiResponse.setMessage(HttpStatus.NOT_FOUND.name());
+                apiResponse.setCode(HttpStatus.NOT_FOUND.value());
+                apiResponse.setCount(0);
+                apiResponse.setData(Collections.emptyMap());
+
+            }
+
+        } catch(Exception e) {
+
+            e.printStackTrace();
+
+            apiResponse.setMessage(e.getLocalizedMessage());
+            apiResponse.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            apiResponse.setCount(0);
+            apiResponse.setData(Collections.emptyMap());
+
+        }
+
+        return ResponseEntity.ok(apiResponse);
+
+    }
+
+    @GetMapping(value = "/pwdResetAuth", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponse> memberPwdResetAuth(
+            @RequestParam long inputAuthNo,
+            HttpServletRequest request
+    ) {
+
+        ApiResponse apiResponse = new ApiResponse();
+
+        try {
+
+            HttpSession session = request.getSession();
+
+            long authNo = Long.valueOf( String.valueOf( session.getAttribute("matchResetAuthNo") ) );
+
+            log.info("authNo = {}, inputAuthNo = {}", authNo, inputAuthNo);
+
+            if(authNo == inputAuthNo) {
+
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("isNext", "Y");
+
+                apiResponse.setMessage(HttpStatus.OK.name());
+                apiResponse.setCode(HttpStatus.OK.value());
+                apiResponse.setCount(0);
+                apiResponse.setData(jsonObject.toString());
+
+            }
+
+        } catch(Exception e) {
+
+            e.printStackTrace();
+
+            apiResponse.setMessage(e.getLocalizedMessage());
+            apiResponse.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            apiResponse.setCount(0);
+            apiResponse.setData(Collections.emptyMap());
+
+        }
+
+        return ResponseEntity.ok(apiResponse);
+
+    }
+
+    @PostMapping(value = "/pwdResetExecute", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponse> memberPwdResetExecute(
+            @RequestParam("newPassword") String newPassword,
+            HttpServletRequest request
+    ) {
+
+        ApiResponse apiResponse = new ApiResponse();
+
+        try {
+
+            byte[] decodeBytes = Base64.getDecoder().decode(newPassword.getBytes());
+            String inputNewPassword = new String(decodeBytes);
+
+            HttpSession session = request.getSession();
+
+            log.info("inputNewPassword = {}", inputNewPassword);
+
+            apiResponse.setMessage(HttpStatus.OK.name());
+            apiResponse.setCode(HttpStatus.OK.value());
+            apiResponse.setCount(0);
+            apiResponse.setData(Collections.emptyMap());
+
+
+        } catch(Exception e) {
+
+            e.printStackTrace();
 
             apiResponse.setMessage(e.getLocalizedMessage());
             apiResponse.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());

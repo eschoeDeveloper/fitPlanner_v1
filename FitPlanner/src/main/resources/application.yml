@@ -12,7 +12,7 @@ spring:
   jpa:
     database-platform: com.fitplanner.core.config.SQLiteDialect
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
     show-sql: true
   # 최초생성시 사용
   # 운영 기준
@@ -22,7 +22,7 @@ spring:
     hikari:
 #      jdbc-url: "jdbc:sqlite:/Users/choeuiseung/Desktop/fitPlanner/FitPlanner/sqlite/fitplanner.db"
       driver-class-name: org.sqlite.JDBC
-      jdbc-url: "jdbc:sqlite:C:/Users/manut/IdeaProjects/fitPlanner/FitPlanner/sqlite/fitplanner.db"
+      jdbc-url: "jdbc:sqlite:D:/WorkSpace/FitPlanner/sqlite/fitplanner.db"
     tomcat:
       max-idle: 20
       min-idle: 15

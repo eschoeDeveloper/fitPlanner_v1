@@ -1,12 +1,17 @@
 package com.fitplanner.domain.member.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @Entity(name="FP_MEMBER")
@@ -51,23 +56,28 @@ public class Member {
     @Column(name="EMAIL")
     private String email;
 
-    @Column(name="ROLE_SEQ")
+    @Column(name="ROLE_SEQ", insertable = true, updatable = false)
     private int roleSeq;
 
-    @Column(name="REGIST_ID")
+    @Column(name="DEL_YN", insertable = true, updatable = false)
+    private String delYn;
+
+    @Column(name="REGIST_ID", insertable = true, updatable = false)
     private String registId;
 
-    @Column(name="REGIST_DT")
-    private String registDt;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="REGIST_DT", insertable = true, updatable = false)
+    private Date registDt;
 
-    @Column(name="UPDATE_ID")
+    @Column(name="UPDATE_ID", insertable = false, updatable = true)
     private String updateId;
 
-    @Column(name="UPDATE_DT")
-    private String updateDt;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="UPDATE_DT", insertable = false, updatable = true)
+    private Date updateDt;
 
     @Builder
-    public Member(String id, String name, String password, String phone, String gender, String age, String registId, String updateId) {
+    public Member(String id, String name, String password, String phone, String gender, String age, String registId, String updateId, String delYn) {
 
         this.id = id;
         this.name = name;
@@ -75,6 +85,7 @@ public class Member {
         this.phone = phone;
         this.gender = gender;
         this.age = age;
+        this.delYn = delYn;
         this.registId = registId;
         this.updateId = updateId;
 

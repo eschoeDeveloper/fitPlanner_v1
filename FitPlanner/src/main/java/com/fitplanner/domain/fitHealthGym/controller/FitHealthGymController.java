@@ -49,10 +49,10 @@ public class FitHealthGymController {
 
         try {
 
-            log.info("naver.api.domain = {}", env.getProperty("naver.api.domain"));
-            log.info("naver.api.url = {}", env.getProperty("naver.api.url"));
-            log.info("naver.api.clientId = {}", env.getProperty("naver.api.clientId"));
-            log.info("naver.api.clientSecret = {}", env.getProperty("naver.api.clientSecret"));
+//            log.info("naver.api.domain = {}", env.getProperty("naver.api.domain"));
+//            log.info("naver.api.url = {}", env.getProperty("naver.api.url"));
+//            log.info("naver.api.clientId = {}", env.getProperty("naver.api.clientId"));
+//            log.info("naver.api.clientSecret = {}", env.getProperty("naver.api.clientSecret"));
 
             String query = "헬스장";
             ByteBuffer byteBuffer = StandardCharsets.UTF_8.encode(query);
@@ -84,8 +84,8 @@ public class FitHealthGymController {
 
             apiResponse = new ApiResponse();
 
-            log.info("jsonObject = {}", jsonObject.getInt("total"));
-            log.info("jsonObject = {}", jsonObject.getJSONArray("items"));
+//            log.info("jsonObject = {}", jsonObject.getInt("total"));
+//            log.info("jsonObject = {}", jsonObject.getJSONArray("items"));
 
             apiResponse.setCount(jsonObject.getInt("total"));
             apiResponse.setCode(HttpStatus.OK.value());

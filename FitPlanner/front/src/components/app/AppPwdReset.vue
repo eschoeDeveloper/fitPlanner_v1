@@ -79,7 +79,7 @@
           let respJson = JSON.parse(JSON.stringify(response.data));
           let jsonData = JSON.parse(respJson.data);
 
-          let isNext = jsonData.get("isNext");
+          let isNext = jsonData.isNext;
 
           if(isNext == "Y") {
             this.$router.push({name: "AppPwdResetAuth"});

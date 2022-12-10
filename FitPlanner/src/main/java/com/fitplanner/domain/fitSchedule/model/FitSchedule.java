@@ -38,4 +38,7 @@ public class FitSchedule {
     @Transient
     private String toDt;
 
+    @Transient
+    private int contentSize;
+
 }

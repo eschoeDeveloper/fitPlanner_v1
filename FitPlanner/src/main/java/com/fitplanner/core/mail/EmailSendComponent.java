@@ -3,9 +3,11 @@ package com.fitplanner.core.mail;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.model.*;
 import com.google.gson.Gson;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -26,13 +28,11 @@ import java.util.Set;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class EmailSendComponent {
 
-    @Autowired
-    private AmazonSimpleEmailService simpleEmailService;
-
-    @Value("${cloud.aws.credentials.from}")
-    private String fromEmail;
+    private final AmazonSimpleEmailService simpleEmailService;
+    private final Environment env;
 
     private void setTemplate(final String tplName, final Map<String, Object> tplData) {
 
@@ -62,8 +62,9 @@ public class EmailSendComponent {
         template.setHtmlPart(templateHtml.toString());
         template.setTextPart(null);
 
-        CreateTemplateRequest request = new CreateTemplateRequest().withTemplate(template);
-        simpleEmailService.createTemplate(request);
+
+        UpdateTemplateRequest request = new UpdateTemplateRequest().withTemplate(template);
+        UpdateTemplateResult result = simpleEmailService.updateTemplate(request);
 
     }
 
@@ -77,7 +78,7 @@ public class EmailSendComponent {
 
         SendTemplatedEmailRequest emailRequest = new SendTemplatedEmailRequest()
                 .withDestination(destination)
-                .withSource(fromEmail)
+                .withSource(env.getProperty("cloud.aws.credentials.from"))
                 .withTemplate(tplName)
                 .withTemplateData(tplDataJsonString);
 

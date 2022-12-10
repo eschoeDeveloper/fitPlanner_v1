@@ -1,17 +1,20 @@
 import axios from 'axios';
 
-const intance = axios.create({
-    baseURL: ``
-});
+const instance = axios.create({
+    baseURL: "http://localhost:7070",
+    timeout: 3000
+})
 
-intance.interceptors.request.use(
+instance.interceptors.request.use(
     (request) => request,
     (error) => Promise.reject(error)
 );
 
-intance.interceptors.response.use(
+instance.interceptors.response.use(
     (response) => response,
     (error) => Promise.reject(error)
 );
 
-export default intance;
+instance.defaults.headers.common["Content-Type"] = "application/json";
+
+export default instance;

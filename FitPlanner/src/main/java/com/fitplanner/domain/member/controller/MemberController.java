@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -38,12 +39,11 @@ import java.util.stream.Collectors;
 public class MemberController {
 
     private final AuthenticationManager authenticationManager;
-
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenUtil jwtTokenUtil;
+    private final EmailSendComponent emailSendComponent;
 
     private final MemberService memberService;
-
-    private final JwtTokenUtil jwtTokenUtil;
 
     /**
      * 로그인
@@ -60,7 +60,7 @@ public class MemberController {
 
        try {
 
-           Member findMember = Member.builder().id(memberParam.getId()).password(memberParam.getPassword()).build();
+           Member findMember = Member.builder().id(memberParam.getId()).password(memberParam.getPassword()).delYn("N").build();
            int memberSeq = memberService.loginMember(findMember);
 
            apiResponse = new ApiResponse();
@@ -150,7 +150,7 @@ public class MemberController {
                apiResponse.setCode(HttpStatus.OK.value());
                apiResponse.setData("Y");
            } else {
-               apiResponse.setMessage("사용중인 아이디");
+               apiResponse.setMessage(HttpStatus.CONFLICT.name() + " :: 사용중인 아이디");
                apiResponse.setCode(HttpStatus.CONFLICT.value());
                apiResponse.setData("N");
            }
@@ -186,6 +186,18 @@ public class MemberController {
         ApiResponse apiResponse;
 
         try {
+
+            //현재 년도 구하기
+            Calendar now = Calendar.getInstance(); //년월일시분초
+            Integer currentYear = now.get(Calendar.YEAR);
+
+            //태어난년도를 위한 세팅
+            Integer birthYear = Integer.parseInt(signUpMember.getBirthday().substring(0,4));
+
+            // 현재 년도 - 태어난 년도 => 나이 (만나이X)
+            int age = (currentYear-birthYear);
+            signUpMember.setAge(String.valueOf(age));
+            signUpMember.setRegistId(signUpMember.getId());
 
             int complete = memberService.signUpMember(signUpMember);
 
@@ -264,11 +276,7 @@ public class MemberController {
                     ObjectMapper mapper = new ObjectMapper();
                     String jsonString = mapper.writeValueAsString(getMember);
 
-                    log.info("findMember = {}", jsonString);
-
                     JSONObject jsonObject = new JSONObject(jsonString);
-
-                    log.info("findMember = {}", jsonObject.toString());
 
                     apiResponse.setMessage(HttpStatus.OK.name());
                     apiResponse.setCode(HttpStatus.OK.value());
@@ -315,6 +323,7 @@ public class MemberController {
      * */
     @PostMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse> updateMember(
+            @AuthenticationPrincipal UserDetailsModel userDetailsModel,
             @RequestBody Member updateMember,
             HttpServletRequest request
     ) {
@@ -324,6 +333,25 @@ public class MemberController {
         ApiResponse apiResponse;
 
         try {
+
+            //현재 년도 구하기
+            Calendar now = Calendar.getInstance(); //년월일시분초
+            Integer currentYear = now.get(Calendar.YEAR);
+
+            //태어난년도를 위한 세팅
+            Integer birthYear = Integer.parseInt(updateMember.getBirthday().substring(0,4));
+
+            // 현재 년도 - 태어난 년도 => 나이 (만나이X)
+            int age = (currentYear-birthYear);
+            updateMember.setAge(String.valueOf(age));
+            updateMember.setSeq(userDetailsModel.getUserSeq());
+
+            if(updateMember.getPassword() != null && updateMember.getPassword() != "") {
+                String encodePassword = passwordEncoder.encode(updateMember.getPassword());
+                updateMember.setPassword(encodePassword);
+            } else {
+                updateMember.setPassword(userDetailsModel.getPassword());
+            }
 
             int isUpdate = memberService.updateMember(updateMember);
 
@@ -423,7 +451,6 @@ public class MemberController {
                 Map<String, Object> tplData = new HashMap<>();
                 tplData.put("authNo", authNo);
 
-                EmailSendComponent emailSendComponent = new EmailSendComponent();
                 SendTemplatedEmailResult result = emailSendComponent.send(member.getEmail(), "pwdReset", tplData);
 
                 if (result.getMessageId() != null && result.getMessageId() != "") {
@@ -464,11 +491,13 @@ public class MemberController {
 
     }
 
-    @GetMapping(value = "/pwdResetAuth", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/pwdResetAuth", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse> memberPwdResetAuth(
-            @RequestParam long inputAuthNo,
+            @RequestBody Map<String, Object> requestParam,
             HttpServletRequest request
     ) {
+
+        JSONObject jsonObject = new JSONObject();
 
         ApiResponse apiResponse = new ApiResponse();
 
@@ -476,17 +505,24 @@ public class MemberController {
 
             HttpSession session = request.getSession();
 
-            long authNo = Long.valueOf( String.valueOf( session.getAttribute("matchResetAuthNo") ) );
+            String authNo = String.valueOf( session.getAttribute("matchResetAuthNo") );
+            String inputAuthNo = (String) requestParam.get("inputAuthNo");
 
             log.info("authNo = {}, inputAuthNo = {}", authNo, inputAuthNo);
 
-            if(authNo == inputAuthNo) {
+            if(authNo.trim().equals( inputAuthNo.trim() )) {
 
-                JSONObject jsonObject = new JSONObject();
                 jsonObject.put("isNext", "Y");
 
                 apiResponse.setMessage(HttpStatus.OK.name());
                 apiResponse.setCode(HttpStatus.OK.value());
+                apiResponse.setCount(0);
+                apiResponse.setData(jsonObject.toString());
+
+            } else {
+
+                apiResponse.setMessage(HttpStatus.NOT_FOUND.name());
+                apiResponse.setCode(HttpStatus.NOT_FOUND.value());
                 apiResponse.setCount(0);
                 apiResponse.setData(jsonObject.toString());
 
@@ -509,25 +545,98 @@ public class MemberController {
 
     @PostMapping(value = "/pwdResetExecute", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse> memberPwdResetExecute(
-            @RequestParam("newPassword") String newPassword,
+            @RequestBody Map<String, Object> requestParam,
             HttpServletRequest request
     ) {
+
+        JSONObject jsonObject = new JSONObject();
 
         ApiResponse apiResponse = new ApiResponse();
 
         try {
 
+            String id           = String.valueOf( requestParam.get("id") );
+            String newPassword  = String.valueOf( requestParam.get("newPassword") );
+
             byte[] decodeBytes = Base64.getDecoder().decode(newPassword.getBytes());
             String inputNewPassword = new String(decodeBytes);
+            inputNewPassword = passwordEncoder.encode(inputNewPassword);
 
-            HttpSession session = request.getSession();
+            Member updateMember = Member.builder().id(id).password(inputNewPassword).build();
 
-            log.info("inputNewPassword = {}", inputNewPassword);
+            int resetComplete = memberService.resetPassword(updateMember);
 
-            apiResponse.setMessage(HttpStatus.OK.name());
-            apiResponse.setCode(HttpStatus.OK.value());
+            if(resetComplete > 0) {
+
+                jsonObject.put("isNext", "Y");
+
+                apiResponse.setMessage(HttpStatus.OK.name());
+                apiResponse.setCode(HttpStatus.OK.value());
+                apiResponse.setCount(0);
+                apiResponse.setData(jsonObject.toString());
+
+            } else {
+
+                jsonObject.put("isNext", "N");
+
+                apiResponse.setMessage(HttpStatus.INTERNAL_SERVER_ERROR.name());
+                apiResponse.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+                apiResponse.setCount(0);
+                apiResponse.setData(jsonObject.toString());
+
+            }
+
+
+        } catch(Exception e) {
+
+            e.printStackTrace();
+
+            apiResponse.setMessage(e.getLocalizedMessage());
+            apiResponse.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
             apiResponse.setCount(0);
             apiResponse.setData(Collections.emptyMap());
+
+        }
+
+        return ResponseEntity.ok(apiResponse);
+
+    }
+
+    @PostMapping(value = "/signOut", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponse> memberSignOut(
+            @AuthenticationPrincipal UserDetailsModel userDetailsModel,
+            HttpServletRequest request
+    ) {
+
+        JSONObject jsonObject = new JSONObject();
+
+        ApiResponse apiResponse = new ApiResponse();
+
+        try {
+
+            Member deleteMember = Member.builder().id(userDetailsModel.getUsername()).build();
+
+            int deleteComplete = memberService.deleteMember(deleteMember);
+
+            if(deleteComplete > 0) {
+
+                jsonObject.put("isNext", "Y");
+
+                apiResponse.setMessage(HttpStatus.OK.name());
+                apiResponse.setCode(HttpStatus.OK.value());
+                apiResponse.setCount(0);
+                apiResponse.setData(jsonObject.toString());
+
+            } else {
+
+                jsonObject.put("isNext", "N");
+
+                apiResponse.setMessage(HttpStatus.INTERNAL_SERVER_ERROR.name());
+                apiResponse.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+                apiResponse.setCount(0);
+                apiResponse.setData(jsonObject.toString());
+
+            }
 
 
         } catch(Exception e) {

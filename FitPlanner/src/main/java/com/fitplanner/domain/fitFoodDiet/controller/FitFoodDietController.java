@@ -1,7 +1,9 @@
 package com.fitplanner.domain.fitFoodDiet.controller;
 
+import com.fitplanner.core.security.UserDetailsModel;
 import com.fitplanner.domain.fitFoodDiet.model.FitFoodDietCategory;
 import com.fitplanner.domain.fitFoodDiet.model.FitFoodDietFood;
+import com.fitplanner.domain.fitFoodDiet.model.FitFoodDietMember;
 import com.fitplanner.domain.fitFoodDiet.service.FitFoodDietService;
 import com.fitplanner.core.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +39,7 @@ public class FitFoodDietController {
     private final FitFoodDietService fitFoodDietService;
 
     @GetMapping(value = "/category/list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ApiResponse> getFoodDietFoodList(
+    public ResponseEntity<ApiResponse> getFoodDietCategoryList(
             @RequestBody FitFoodDietCategory fitFoodDietCategory,
             HttpServletRequest request
     ) {
@@ -73,6 +76,7 @@ public class FitFoodDietController {
 
     @PostMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse> getFoodDietFoodList(
+            @AuthenticationPrincipal UserDetailsModel userDetailsModel,
             @RequestBody FitFoodDietFood fitFoodDietFood,
             HttpServletRequest request
     ) {
@@ -81,7 +85,7 @@ public class FitFoodDietController {
 
         try {
 
-            List<FitFoodDietFood> getFoodList = fitFoodDietService.findAll(fitFoodDietFood);
+            List<FitFoodDietFood> getFoodList = fitFoodDietService.findAll(fitFoodDietFood, userDetailsModel.getUserSeq());
 
             apiResponse = new ApiResponse();
 

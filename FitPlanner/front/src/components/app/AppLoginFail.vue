@@ -38,7 +38,7 @@ export default {
   name: "AppLoginFail.vue",
   methods : {
     goLogIn() {
-      this.$router.push({ path: '/member/app' });
+      this.$router.push({ name: "AppLogin" });
     }
   }
 }

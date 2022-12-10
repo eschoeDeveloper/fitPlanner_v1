@@ -13,10 +13,10 @@
                 <app-input
                     icon="envelope"
                     class="mb-3"
-                    type="email"
-                    placeholder="Email"
+                    type="text"
+                    placeholder="ID"
                     autocomplete="off"
-                    v-model="email"
+                    v-model="inputId"
                 />
                 <app-input
                     icon="lock"
@@ -24,12 +24,12 @@
                     type="password"
                     placeholder="Password"
                     autocomplete="off"
-                    v-model="password"
+                    v-model="inputPassword"
                 />
 
                 <div class="row">
                     <div class="col-7">
-                        <pf-checkbox type="icheck" v-model="rememberMe">
+                        <pf-checkbox type="check" v-model="rememberMe">
                             {{ $t("labels.rememberMe") }}
                         </pf-checkbox>
                     </div>
@@ -39,7 +39,6 @@
                             type="submit"
                             block="true"
                             :loading="isAuthLoading"
-                            :disabled="isFacebookLoading || isGoogleLoading"
                         >
                             {{ $t("labels.signIn") }}
                         </pf-button>
@@ -47,30 +46,6 @@
                     <!-- /.col -->
                 </div>
             </form>
-
-<!--            <div class="social-auth-links text-center mt-2 mb-3">-->
-<!--                <pf-button-->
-<!--                    class="mb-2"-->
-<!--                    block="true"-->
-<!--                    @click="loginByFacebook"-->
-<!--                    :loading="isFacebookLoading"-->
-<!--                    :disabled="isAuthLoading || isGoogleLoading"-->
-<!--                >-->
-<!--                    <i class="fab fa-facebook mr-2"></i>-->
-<!--                    <span> {{ $t("labels.signInUsingFB") }}</span>-->
-<!--                </pf-button>-->
-<!--                <pf-button-->
-<!--                    block="true"-->
-<!--                    theme="danger"-->
-<!--                    @click="loginByGoogle"-->
-<!--                    :loading="isGoogleLoading"-->
-<!--                    :disabled="isAuthLoading || isFacebookLoading"-->
-<!--                >-->
-<!--                    <i class="fab fa-google mr-2"></i>-->
-<!--                    <span>{{ $t("labels.SignInUsingGoogle") }}</span>-->
-<!--                </pf-button>-->
-<!--            </div>-->
-            <!-- /.social-auth-links -->
 
             <p class="mb-1">
                 <router-link to="/forgot-password">

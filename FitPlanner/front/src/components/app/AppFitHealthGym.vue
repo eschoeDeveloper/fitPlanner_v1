@@ -39,19 +39,16 @@
     },
     methods: {
       getHealthGymList() {
-        this.axios.post("/api/fitHealthGym/list", {}, {
-          withCredentials: true
-        })
+        this.axios.post("/api/fitHealthGym/list", {}, {})
         .then((response) => {
               let respJson = JSON.parse(JSON.stringify(response.data));
               this.healthGymList = JSON.parse(respJson.data);
-              console.log(this.healthGymList);
         }).catch((error) => {
           console.log(error);
         });
       },
-      goHealthGym(sss){
-        window.open(sss);
+      goHealthGym(url){
+        window.open(url);
       }
     },
     created() {

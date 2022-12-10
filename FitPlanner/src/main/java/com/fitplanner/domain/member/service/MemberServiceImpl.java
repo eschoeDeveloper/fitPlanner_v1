@@ -108,6 +108,17 @@ public class MemberServiceImpl implements MemberService {
     public int updateMember(Member updateMember) {
         return memberRepository.save(updateMember).getSeq();
     }
+
+    @Override
+    public int deleteMember(Member deleteMember) {
+        return memberRepository.deleteMember(deleteMember.getId());
+    }
+
+    @Override
+    public int resetPassword(Member updateMember) {
+        return memberRepository.resetPassword(updateMember.getId(), updateMember.getPassword());
+    }
+
 }
 
 

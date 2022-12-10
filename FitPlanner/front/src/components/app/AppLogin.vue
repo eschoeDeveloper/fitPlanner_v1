@@ -19,13 +19,13 @@
 
                 <div class="form-outline mb-4">
                   <label class="form-label" for="inputId">아이디</label>
-                  <input type="email" ref="inputId"  name="inputId" id="inputId" class="form-control" :placeholder="placeholderId"/>
+                  <input type="email" ref="inputId" name="inputId" id="inputId" class="form-control" :placeholder="placeholderId" autocomplete="off" />
                   <p ref="idGuide" style="display:none; color: red; font-size: 9px;">입력하신 아이디가 올바르지 않습니다.</p>
                 </div>
 
                 <div class="form-outline mb-4">
                   <label class="form-label" for="inputPwd">암호</label>
-                  <input type="password" ref="inputPwd" name="inputPwd" id="inputPwd" class="form-control" :placeholder="placeholderPwd"/>
+                  <input type="password" ref="inputPwd" name="inputPwd" id="inputPwd" class="form-control" :placeholder="placeholderPwd" autocomplete="off" />
                   <p ref="pwdGuide" style="display:none; color:red; font-size: 9px;">입력하신 비밀번호가 올바르지 않습니다.</p>
                 </div>
 
@@ -79,8 +79,6 @@ export default {
 
     window.addEventListener("load", () => {
       this.setLoginIdByCookie();
-      window.screen.availWidth = 415;
-      window.screen.availHeight = 740;
     });
 
   },
@@ -152,13 +150,13 @@ export default {
         let respData = JSON.parse(respJson.data);
         let respCode = respJson.code;
 
-        console.log(respData);
+        console.log(respJson.code);
 
-        this.$cookies.set("ssoLogin", respData["ssoLogin"]);
+        this.$cookies.set("ssoLogin", respData.ssoLogin);
 
         if(Number(respCode) < 400 ) {
           this.$router.push({ name: 'AppMain' });
-          this.$store.dispatch("setApiToken", respData["jwtToken"]);
+          this.$store.dispatch("setApiToken", respData.jwtToken);
           this.axios.defaults.headers.common["Authorization"] = "Bearer " + respData["jwtToken"];
         } else if (Number(respCode) >= 400) {
           this.$router.push({ name: 'AppLoginFail' });

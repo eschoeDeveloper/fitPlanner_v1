@@ -20,11 +20,17 @@
               <form class="px-md-2">
 
                 <div class="form-outline mb-4">
-                  <label class="form-label" for="newPassword">새 비밀번호</label>
-                  <input type="text" ref="newPassword"  name="newPassword" id="newPassword" class="form-control" :placeholder="placeholderNewPassword" />
+                  <label class="form-label" for="inputId"><b>아이디</b></label>
+                  <input type="text" ref="inputId"  name="inputId" id="inputId" class="form-control" :placeholder="placeholderInputId" />
+                </div>
 
-                  <label class="form-label" for="newCheckPassword">비밀번호 확인</label>
-                  <input type="text" ref="newCheckPassword"  name="newCheckPassword" id="newCheckPassword" class="form-control" :placeholder="placeholderNewCheckPassword" />
+
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="newPassword"><b>새 비밀번호</b></label>
+                  <input type="password" ref="newPassword"  name="newPassword" id="newPassword" class="form-control" :placeholder="placeholderNewPassword" />
+
+                  <label class="form-label mt-4" for="newCheckPassword"><b>비밀번호 확인</b></label>
+                  <input type="password" ref="newCheckPassword"  name="newCheckPassword" id="newCheckPassword" class="form-control" :placeholder="placeholderNewCheckPassword" />
 
                   <p ref="inputGuide" style="display:none; color: red; font-size: 9px;">새 비밀번호가 일치하지 않거나, 입력되지 않았습니다.</p>
                 </div>
@@ -56,6 +62,7 @@
     name: "AppPwdResetExecute",
     data() {
       return {
+        placeholderInputId: "Enter Input Id",
         placeholderNewPassword: "Enter Input New Password",
         placeholderNewCheckPassword: "Enter Input New Check Password",
       }
@@ -63,18 +70,20 @@
     methods: {
       goPwdResetExecute() {
 
+        const inputId = this.$refs.inputId.value;
         const newPassword = this.$refs.newPassword.value;
         const newCheckPassword = this.$refs.newCheckPassword.value;
 
         if(!newPassword || !newCheckPassword || (newPassword != newCheckPassword)) {
-          this.$refs.authNoGuide.style.display = "block";
+          this.$refs.inputGuide.style.display = "block";
           return false;
         } else {
-          this.$refs.authNoGuide.style.display = "none";
+          this.$refs.inputGuide.style.display = "none";
         }
 
         const JsonData = JSON.stringify(
             {
+              id: inputId,
               newPassword : btoa(newPassword)
             }
         );
@@ -85,7 +94,7 @@
           let respJson = JSON.parse(JSON.stringify(response.data));
           let jsonData = JSON.parse(respJson.data);
 
-          let isNext = jsonData.get("isNext");
+          let isNext = jsonData.isNext;
 
           if(isNext == "Y") {
             this.$router.push({name: "AppLogin"});

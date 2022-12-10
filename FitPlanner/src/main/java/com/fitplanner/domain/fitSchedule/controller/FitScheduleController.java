@@ -1,11 +1,14 @@
 package com.fitplanner.domain.fitSchedule.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fitplanner.core.response.ApiResponse;
 import com.fitplanner.core.security.UserDetailsModel;
 import com.fitplanner.domain.fitSchedule.model.FitSchedule;
+import com.fitplanner.domain.fitSchedule.model.FitSchedulePages;
 import com.fitplanner.domain.fitSchedule.service.FitScheduleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -98,10 +101,24 @@ public class FitScheduleController {
 
             if(fitScheduleInfo.isPresent()) {
 
+                Optional<FitSchedulePages> fitSchedulePages = fitScheduleService.getFitSchedulePages(fitScheduleInfo.get().getScheduleNo());
+
+                FitSchedule tmp1 = fitScheduleInfo.get();
+                FitSchedulePages tmp2 = fitSchedulePages.get();
+
+                ObjectMapper mapper = new ObjectMapper();
+                String fitScheduleInfoStr = mapper.writeValueAsString(tmp1);
+                String fitSchedulePagesStr = mapper.writeValueAsString(tmp2);
+
+                JSONObject jsonObject = new JSONObject();
+
+                jsonObject.put("fitScheduleInfo", new JSONObject(fitScheduleInfoStr));
+                jsonObject.put("fitSchedulePages", new JSONObject(fitSchedulePagesStr));
+
                 apiResponse.setMessage(HttpStatus.OK.name());
                 apiResponse.setCode(HttpStatus.OK.value());
                 apiResponse.setCount(1);
-                apiResponse.setData(fitScheduleInfo);
+                apiResponse.setData(jsonObject.toString());
 
             } else {
 

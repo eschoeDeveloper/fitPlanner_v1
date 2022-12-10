@@ -17,4 +17,5 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  * =======================================================
  */
 public interface FitFoodDietFoodRepository extends JpaRepository<FitFoodDietFood, Object>, JpaSpecificationExecutor<FitFoodDietFood> {
+
 }

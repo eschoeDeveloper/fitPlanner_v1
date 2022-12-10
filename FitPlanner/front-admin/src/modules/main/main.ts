@@ -5,7 +5,7 @@ import Header from './header/header.vue';
 import MenuSidebar from './menu-sidebar/menu-sidebar.vue';
 import ControlSidebar from './control-sidebar/control-sidebar.vue';
 import Footer from './footer/footer.vue';
-import {getProfile} from '@/services/auth';
+// import {getProfile} from '@/services/auth';
 
 @Options({
     components: {
@@ -26,8 +26,8 @@ export default class Main extends Vue {
         this.appElement.classList.add('sidebar-mini');
         this.appElement.classList.add('layout-fixed');
         try {
-            const user = await getProfile();
-            this.$store.dispatch('auth/getUser', user);
+            // const user = await getProfile();
+            // this.$store.dispatch('auth/getUser', user);
         } catch (error) {
             this.$store.dispatch('auth/logout');
         }

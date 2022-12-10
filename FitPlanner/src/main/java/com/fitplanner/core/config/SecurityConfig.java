@@ -57,10 +57,15 @@ public class SecurityConfig{
         return (web -> {
             web.ignoring().antMatchers(
                "/api/member/login",
-               "/api/member/signup",
+               "/api/member/signUp",
                "/api/member/checkId/**",
                "/api/member/auth",
-               "/api/admin/login"
+               "/api/admin/login",
+               "/api/member/pwdReset",
+               "/api/member/pwdResetAuth",
+               "/api/member/pwdResetExecute",
+               "/api/admin/login",
+               "/api/admin/logout"
             );
         });
 

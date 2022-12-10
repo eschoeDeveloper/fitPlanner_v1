@@ -3,7 +3,7 @@ import {
     registerByAuth,
     registerByGoogle,
     registerByFacebook
-} from '@/services/auth';
+} from '@/services/auth_back';
 import Input from '@/components/input/input.vue';
 import {useToast} from 'vue-toastification';
 import {PfButton, PfCheckbox} from '@profabric/vue-components';

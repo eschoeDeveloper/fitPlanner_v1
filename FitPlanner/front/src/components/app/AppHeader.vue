@@ -30,6 +30,9 @@
               <a class="dropdown-item" @click="goMemberEdit()">회원정보수정</a>
             </li>
             <li class="nav-item mb-2">
+              <a class="dropdown-item" @click="goSignOut();">회원탈퇴</a>
+            </li>
+            <li class="nav-item mb-2">
               <a class="dropdown-item" @click="goLogOut()">로그아웃</a>
             </li>
           </ul>
@@ -81,6 +84,9 @@ export default {
         console.log(error);
       });
 
+    },
+    goSignOut() {
+      this.$router.push({ path: '/app/signOut' });
     }
 
   }

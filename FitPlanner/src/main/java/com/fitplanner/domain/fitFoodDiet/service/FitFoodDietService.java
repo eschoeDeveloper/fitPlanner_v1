@@ -22,7 +22,7 @@ public interface FitFoodDietService {
 
     List<FitFoodDietCategory> getCategoryList(FitFoodDietCategory fitFoodDietCategory);
 
-    List<FitFoodDietFood> findAll(FitFoodDietFood fitFoodDietFood);
+    List<FitFoodDietFood> findAll(FitFoodDietFood fitFoodDietFood, int memberSeq);
 
     Optional<FitFoodDietFood> findOne(FitFoodDietFood fitFoodDietFood);
 

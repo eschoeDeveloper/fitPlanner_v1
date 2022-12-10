@@ -1,69 +1,40 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import {Gatekeeper} from 'gatekeeper-client-sdk';
+
+import axios from "@/utils/axios";
 
 const getError = (error: any) => {
     const message = error.message || 'Failed';
     return new Error(message);
 };
 
-export const loginByAuth = async (email: string, password: string) => {
-    try {
-        const token = await Gatekeeper.loginByAuth(email, password);
-        return token;
-    } catch (error: any) {
-        throw getError(error);
-    }
-};
+export const loginByAuth = async (inputId: string, inputPassword: string) => {
 
-export const registerByAuth = async (email: string, password: string) => {
     try {
-        const token = await Gatekeeper.registerByAuth(email, password);
-        return token;
-    } catch (error: any) {
-        throw getError(error);
-    }
-};
 
-export const loginByGoogle = async () => {
-    try {
-        const token = await Gatekeeper.loginByGoogle();
-        return token;
-    } catch (error: any) {
-        throw getError(error);
-    }
-};
+        const requestData = JSON.stringify({
+            inputId: inputId,
+            inputPassword: inputPassword
+        });
 
-export const registerByGoogle = async () => {
-    try {
-        const token = await Gatekeeper.registerByGoogle();
-        return token;
-    } catch (error: any) {
-        throw getError(error);
-    }
-};
+        const jwtToken = await axios.post("/api/admin/login", requestData, {headers:{"Content-Type": "application/json"}})
+        .then((response) => {
 
-export const loginByFacebook = async () => {
-    try {
-        const token = await Gatekeeper.loginByFacebook();
-        return token;
-    } catch (error: any) {
-        throw getError(error);
-    }
-};
+            const respJson = JSON.parse(JSON.stringify(response.data));
+            const respData = JSON.parse(respJson.data);
+            const respCode = respJson.code;
 
-export const registerByFacebook = async () => {
-    try {
-        const token = await Gatekeeper.registerByFacebook();
-        return token;
+            if(Number(respCode) < 400 ) {
+                axios.defaults.headers.common["Authorization"] = "Bearer " + respData.jwtToken;
+                return respData.jwtToken;
+            }
+
+        }).catch((error) => {
+            console.log(error);
+        });
+
+        return jwtToken;
+
     } catch (error: any) {
         throw getError(error);
     }
-};
-export const getProfile = async () => {
-    try {
-        const user = await Gatekeeper.getProfile();
-        return user;
-    } catch (error: any) {
-        throw getError(error);
-    }
+
 };

@@ -5,7 +5,10 @@ import index from "@/components/index";
 
 import AppLogin from "@/components/app/AppLogin";
 import AppSignUp from "@/components/app/AppSignUp";
+import AppSignOut from "@/components/app/AppSignOut";
 import AppPwdReset from "@/components/app/AppPwdReset";
+import AppPwdResetAuth from "@/components/app/AppPwdResetAuth";
+import AppPwdResetExecute from "@/components/app/AppPwdResetExecute";
 import AppMain from "@/components/app/AppMain";
 import AppLoginFail from "@/components/app/AppLoginFail";
 import AppFitSchedule from "@/components/app/AppFitSchedule";
@@ -25,7 +28,10 @@ const routes = [
 
     { path: "/app/login", name: "AppLogin", component: AppLogin},
     { path: "/app/signUp", name: "AppSignUp", component: AppSignUp},
+    { path: "/app/signOut", name: "AppSignOut", component: AppSignOut},
     { path: "/app/pwdReset", name: "AppPwdReset", component: AppPwdReset},
+    { path: "/app/pwdResetAuth", name: "AppPwdResetAuth", component: AppPwdResetAuth},
+    { path: "/app/pwdResetExecute", name: "AppPwdResetExecute", component: AppPwdResetExecute},
     { path: "/app/main", name: "AppMain", component: AppMain},
     { path: "/app/loginFail", name: "AppLoginFail", component: AppLoginFail},
     { path: "/app/fitSchedule", name: "AppFitSchedule", component: AppFitSchedule},

@@ -11,9 +11,9 @@
         <p class="card-text">{{scheduleInfo.scheduleDesc}}</p>
       </div>
       <div class="card-footer">
-        <button type="button" class="btn btn-sm btn-secondary" v-show="scheduleInfo.scheduleNo > 1" @click="goPrevOrNext(scheduleInfo.scheduleNo, 'prev')">이전으로</button>
+        <button type="button" class="btn btn-sm btn-secondary" v-show="Number(schedulePages.prevNo) > 0" @click="goPrevOrNext(schedulePages.prevNo, 'prev')">이전으로</button>
         <button type="button" class="btn btn-sm btn-success" @click="goList()">목록으로</button>
-        <button type="button" class="btn btn-sm btn-secondary" v-show="scheduleInfo.scheduleNo != null" @click="goPrevOrNext(scheduleInfo.scheduleNo, 'next')">다음으로</button>
+        <button type="button" class="btn btn-sm btn-secondary" v-show="Number(schedulePages.nextNo) > 0" @click="goPrevOrNext(schedulePages.nextNo, 'next')">다음으로</button>
       </div>
 
     </div>
@@ -29,7 +29,8 @@
     name: "AppFitScheduleView",
     data() {
       return {
-        scheduleInfo : {}
+        scheduleInfo : {},
+        schedulePages : {}
       }
     },
     methods: {
@@ -42,7 +43,13 @@
         this.axios.get("/api/fitSchedule/view" + QueryString, {})
         .then((response) => {
            let respJson = JSON.parse(JSON.stringify(response.data));
-           this.scheduleInfo = JSON.parse(JSON.stringify(respJson.data));
+           let respData = JSON.parse(respJson.data);
+
+           this.scheduleInfo = JSON.parse(JSON.stringify(respData.fitScheduleInfo));
+           this.schedulePages = JSON.parse(JSON.stringify(respData.fitSchedulePages));
+
+           alert(JSON.stringify(this.schedulePages));
+
         })
         .catch((error) => {
           console.log(error);

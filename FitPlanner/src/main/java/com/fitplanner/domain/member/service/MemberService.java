@@ -30,5 +30,8 @@ public interface MemberService {
     int signUpMember(Member insertMember);
 
     int updateMember(Member updateMember);
+    int deleteMember(Member deleteMember);
+
+    int resetPassword(Member updateMember);
 
 }

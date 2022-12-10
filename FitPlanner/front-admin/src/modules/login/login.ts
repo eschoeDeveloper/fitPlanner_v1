@@ -1,9 +1,11 @@
 import {Options, Vue} from 'vue-class-component';
-import {loginByAuth, loginByGoogle, loginByFacebook} from '@/services/auth';
+import { loginByAuth } from '@/services/auth';
 
-import Input from '@/components/input/input.vue';
+import {PfButton, PfCheckbox} from "@profabric/vue-components";
+import Input from "@/components/input/input.vue";
+
 import {useToast} from 'vue-toastification';
-import {PfButton, PfCheckbox} from '@profabric/vue-components';
+
 
 @Options({
     components: {
@@ -13,14 +15,15 @@ import {PfButton, PfCheckbox} from '@profabric/vue-components';
     }
 })
 export default class Login extends Vue {
+
     private appElement: HTMLElement | null = null;
-    public email: string = '';
-    public password: string = '';
-    public rememberMe: boolean = false;
-    public isAuthLoading: boolean = false;
-    public isFacebookLoading: boolean = false;
-    public isGoogleLoading: boolean = false;
     private toast = useToast();
+
+    private inputId: string = '';
+    private inputPassword: string = '';
+    private rememberMe: boolean = false;
+
+    public isAuthLoading: boolean = false;
 
     public mounted(): void {
         this.appElement = document.getElementById('app') as HTMLElement;
@@ -34,7 +37,7 @@ export default class Login extends Vue {
     public async loginByAuth(): Promise<void> {
         try {
             this.isAuthLoading = true;
-            const token = await loginByAuth(this.email, this.password);
+            const token = await loginByAuth(this.inputId, this.inputPassword);
             this.$store.dispatch('auth/login', token);
             this.toast.success('로그인 완료');
             this.isAuthLoading = false;
@@ -44,29 +47,4 @@ export default class Login extends Vue {
         }
     }
 
-    public async loginByFacebook(): Promise<void> {
-        try {
-            this.isFacebookLoading = true;
-            const token = await loginByFacebook();
-            this.$store.dispatch('auth/login', token);
-            this.toast.success('페이스북 로그인 완료');
-            this.isFacebookLoading = false;
-        } catch (error: any) {
-            this.toast.error(error.message);
-            this.isFacebookLoading = false;
-        }
-    }
-
-    public async loginByGoogle(): Promise<void> {
-        try {
-            this.isGoogleLoading = true;
-            const token = await loginByGoogle();
-            this.$store.dispatch('auth/login', token);
-            this.toast.success('구글 로그인 완료');
-            this.isGoogleLoading = false;
-        } catch (error: any) {
-            this.toast.error(error.message);
-            this.isGoogleLoading = false;
-        }
-    }
 }

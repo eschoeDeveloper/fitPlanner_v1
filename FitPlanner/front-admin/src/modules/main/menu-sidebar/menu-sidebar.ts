@@ -49,6 +49,10 @@ export const MENU = [
         path: '/management/exercise'
     },
     {
+        name: '운동 부위 관리',
+        path: '/management/exercise/category'
+    },
+    {
         name: '관리자 관리',
         path: '/management/admin'
     },
@@ -56,12 +60,12 @@ export const MENU = [
         name: '회원 관리',
         path: '/management/member'
     },
-    {
-        name: '회원별 스케줄 관리',
-        path: '/management/schedule'
-    },
-    {
-        name: '회원별 식단 관리',
-        path: '/management/foodDiet'
-    },
+    // {
+    //     name: '회원별 스케줄 관리',
+    //     path: '/management/schedule'
+    // },
+    // {
+    //     name: '회원별 식단 관리',
+    //     path: '/management/foodDiet'
+    // },
 ];

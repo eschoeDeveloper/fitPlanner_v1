@@ -19,33 +19,49 @@
 <section class="content">
     <!-- Default box -->
     <div class="container-fluid">
+
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Title</h3>
+                <h3 class="card-title">목록</h3>
 
                 <div class="card-tools">
-                    <button
-                        type="button"
-                        class="btn btn-tool"
-                        data-widget="collapse"
-                        data-toggle="tooltip"
-                        title="Collapse"
-                    >
-                        <i class="fa fa-minus"></i>
-                    </button>
-                    <button
-                        type="button"
-                        class="btn btn-tool"
-                        data-widget="remove"
-                        data-toggle="tooltip"
-                        title="Remove"
-                    >
-                        <i class="fa fa-times"></i>
-                    </button>
+                    <button type="button" class="btn btn-outline-primary" v-on:click="goAdminEdit(0);">등록</button>
                 </div>
             </div>
             <div class="card-body">
-                Start creating your amazing application!
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <td>ID</td>
+                        <td>이름</td>
+                        <td>이메일</td>
+                        <td>삭제여부</td>
+                        <td>등록일</td>
+                        <td>등록자</td>
+                        <td>추가작업</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr :key="i" v-for="(adminInfo, i) in adminList">
+                            <td>{{adminInfo.id}}</td>
+                            <td>{{adminInfo.name}}</td>
+                            <td>{{adminInfo.email}}</td>
+                            <td>{{adminInfo.delYn}}</td>
+                            <td>{{adminInfo.registDt}}</td>
+                            <td>{{adminInfo.registId}}</td>
+                            <td>
+                                <button type="button" class="btn btn-outline-info" v-on:click="goAdminEdit(adminInfo.seq)">수정</button>
+                                <button type="button" class="btn btn-outline-danger">삭제</button>
+                            </td>
+                        </tr>
+                        <tr v-show="adminList.length == 0">
+                            <td COLSPAN="7">
+                                <p style="text-align: center; padding:1vh;"><h5>등록된 관리자가 없습니다..</h5></p>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
             </div>
             <!-- /.card-body -->
             <div class="card-footer">Footer</div>

@@ -1,4 +1,4 @@
-package com.fitplanner.domain.admin.member.model;
+package com.fitplanner.domain.admin.admin.model;
 
 import lombok.Builder;
 import lombok.Data;
@@ -29,7 +29,7 @@ public class Admin {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer seq;
 
-    @Column(name="ID")
+    @Column(name="ID", insertable=true, updatable=false)
     private String id;
 
     @Column(name="NAME")

@@ -1,0 +1,99 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h4>회원 관리</h4>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item">회원 수정</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <!-- Default box -->
+    <div class="container-fluid">
+
+        <div class="card">
+            <div class="card-body">
+                <form id="memberForm" name="memberForm" class="form-horizontal">
+                    <div class="form-group row">
+                        <label for="inputId" class="col-sm-2 col-form-label">아이디</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="id" id="inputId" placeholder="ID" :value="memberInfo.id" readonly/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputName" class="col-sm-2 col-form-label">이름</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="name" id="inputName" placeholder="Name" :value="memberInfo.name"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputEmail" class="col-sm-2 col-form-label">이메일</label>
+                        <div class="col-sm-10">
+                            <input type="email" class="form-control" name="email" id="inputEmail" placeholder="Email" :value="memberInfo.email"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputPhone" class="col-sm-2 col-form-label">휴대폰</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="phone" id="inputPhone" placeholder="Phone" :value="memberInfo.phone"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputPassword" class="col-sm-2 col-form-label">비밀번호</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" name="password" id="inputPassword" placeholder="Password" value="" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputCheckPassword" class="col-sm-2 col-form-label">비밀번호 확인</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" name="checkPassword" id="inputCheckPassword" placeholder="Check Password" value=""/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputBirthday" class="col-sm-2 col-form-label">생년월일</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="birthday" id="inputBirthday" placeholder="birthday" :value="memberInfo.birthday"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputGender" class="col-sm-2 col-form-label">성별</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" name="gender" id="inputGender" :value="memberInfo.gender">
+                                <option value="G01">남성</option>
+                                <option value="G02">여성</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputDelYn" class="col-sm-2 col-form-label">탈퇴여부</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" name="delYn" id="inputDelYn" :value="memberInfo.delYn" readonly>
+                                <option value="Y">예</option>
+                                <option value="N">아니오</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="offset-sm-2 col-sm-10">
+                            <button type="button" class="btn btn-success" v-on:click="executeMemberEdit();">저장</button>
+                            <button type="button" class="btn btn-primary ml-2" v-on:click="goMemberList();">목록으로</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- /.card-body -->
+        </div>
+    </div>
+    <!-- /.card -->
+</section>
+<!-- /.content -->

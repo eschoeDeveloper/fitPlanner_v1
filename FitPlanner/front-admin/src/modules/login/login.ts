@@ -37,10 +37,18 @@ export default class Login extends Vue {
     public async loginByAuth(): Promise<void> {
         try {
             this.isAuthLoading = true;
+
             const token = await loginByAuth(this.inputId, this.inputPassword);
-            this.$store.dispatch('auth/login', token);
-            this.toast.success('로그인 완료');
+
+            if(token != null && token != "") {
+                this.$store.dispatch('auth/login', token);
+                this.toast.success(this.inputId + '님 로그인 완료');
+            } else {
+                this.toast.error("로그인을 실패하였습니다.\n확인 후, 다시 시도하여 주세요.");
+            }
+
             this.isAuthLoading = false;
+
         } catch (error: any) {
             this.toast.error(error.message);
             this.isAuthLoading = false;

@@ -1,12 +1,8 @@
-package com.fitplanner.domain.admin.member.service;
+package com.fitplanner.domain.admin.admin.service;
 
-import com.fitplanner.domain.admin.member.model.Admin;
-import com.fitplanner.domain.admin.member.repository.AdminRepository;
-import com.fitplanner.domain.admin.member.repository.specification.AdminSpecification;
-import com.fitplanner.domain.member.model.CheckIdMapping;
-import com.fitplanner.domain.member.model.Member;
-import com.fitplanner.domain.member.repository.MemberRepository;
-import com.fitplanner.domain.member.repository.specification.MemberSpecification;
+import com.fitplanner.domain.admin.admin.model.Admin;
+import com.fitplanner.domain.admin.admin.repository.AdminRepository;
+import com.fitplanner.domain.admin.admin.repository.specification.AdminSpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
@@ -35,6 +31,24 @@ public class AdminServiceImpl implements AdminService {
 
     private final AdminRepository adminRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @Override
+    public List<Admin> adminList() {
+        Specification<Admin> specification = Specification
+                .where(AdminSpecification.adminRole());
+
+
+        return adminRepository.findAll(specification);
+    }
+
+    @Override
+    public List<Admin> memberList() {
+        Specification<Admin> specification = Specification
+                .where(AdminSpecification.memberRole());
+
+
+        return adminRepository.findAll(specification);
+    }
 
     @Override
     public Optional<Admin> findAdmin(int adminSeq) {

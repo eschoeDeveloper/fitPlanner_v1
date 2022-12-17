@@ -4,21 +4,21 @@ import axios from "@/utils/axios";
 @Options({})
 export default class Dashboard extends Vue {
 
-    private dashboardInfo: object = {};
+    private exerciseRankList: any = [];
+    private memberSexList: any = [];
+    private memberAgeList: any = [];
 
     public created(): void {
 
-        this.dashboardInfo = axios.post("/api/admin/login", {}, {})
+        axios.post("/api/admin/main/data", {}, {})
         .then((response) => {
 
             const respJson = JSON.parse(JSON.stringify(response.data));
             const respData = JSON.parse(respJson.data);
-            const respCode = respJson.code;
 
-            if (Number(respCode) < 400) {
-                axios.defaults.headers.common["Authorization"] = "Bearer " + respData.jwtToken;
-                return respData.jwtToken;
-            }
+            this.exerciseRankList = JSON.parse(JSON.stringify(respData.getExerciseRankList));
+            this.memberSexList = JSON.parse(JSON.stringify(respData.getMemberSexList));
+            this.memberAgeList = JSON.parse(JSON.stringify(respData.getMemberAgeList));
 
         }).catch((error) => {
            console.log(error);

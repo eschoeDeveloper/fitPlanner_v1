@@ -1,17 +1,14 @@
-package com.fitplanner.domain.admin.member.controller;
+package com.fitplanner.domain.admin.admin.controller;
 
-import com.amazonaws.services.simpleemail.model.SendTemplatedEmailResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fitplanner.core.mail.EmailSendComponent;
 import com.fitplanner.core.response.ApiResponse;
 import com.fitplanner.core.security.JwtTokenUtil;
 import com.fitplanner.core.security.UserDetailsModel;
-import com.fitplanner.domain.admin.member.model.Admin;
-import com.fitplanner.domain.admin.member.service.AdminService;
-
+import com.fitplanner.domain.admin.admin.model.Admin;
+import com.fitplanner.domain.admin.admin.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -125,6 +122,57 @@ public class AdminController {
 
    }
 
+    @PostMapping(value = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponse> getAdminList(
+            HttpServletRequest request
+    ) {
+
+        ApiResponse apiResponse;
+
+        try {
+
+            List<Admin> getAdminList = adminService.adminList();
+
+            apiResponse = new ApiResponse();
+
+            if(getAdminList != null) {
+
+                JSONObject jsonObject = new JSONObject();
+
+                jsonObject.put("adminList", getAdminList.toArray());
+
+                apiResponse.setMessage(HttpStatus.OK.name());
+                apiResponse.setCode(HttpStatus.OK.value());
+                apiResponse.setCount(getAdminList.size());
+                apiResponse.setData(jsonObject.toString());
+
+            } else {
+
+                apiResponse.setMessage(HttpStatus.INTERNAL_SERVER_ERROR.name());
+                apiResponse.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+                apiResponse.setCount(0);
+                apiResponse.setData(Collections.emptyMap());
+
+            }
+
+
+        } catch(Exception e) {
+
+            e.printStackTrace();
+
+            apiResponse = new ApiResponse();
+
+            apiResponse.setMessage(e.getLocalizedMessage());
+            apiResponse.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            apiResponse.setCount(0);
+            apiResponse.setData(Collections.emptyMap());
+
+        }
+
+        return ResponseEntity.ok(apiResponse);
+
+    }
+
    @PostMapping(value = "/checkId/{checkId}", produces = MediaType.APPLICATION_JSON_VALUE)
    public ResponseEntity<ApiResponse> memberIdCheck(
      @PathVariable("checkId") String checkId
@@ -181,6 +229,7 @@ public class AdminController {
      * */
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse> createAdmin(
+            @AuthenticationPrincipal UserDetailsModel userDetailsModel,
             @RequestBody Admin createAdmin,
             HttpServletRequest request
     ) {
@@ -201,7 +250,7 @@ public class AdminController {
             // 현재 년도 - 태어난 년도 => 나이 (만나이X)
             int age = (currentYear-birthYear);
             createAdmin.setAge(String.valueOf(age));
-            createAdmin.setRegistId(createAdmin.getId());
+            createAdmin.setRegistId(userDetailsModel.getUsername());
 
             int complete = adminService.createAdmin(createAdmin);
 
@@ -252,6 +301,7 @@ public class AdminController {
      * */
     @PostMapping(value = "/get", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse> getAdmin(
+            @RequestBody Admin getAdmin,
             HttpServletRequest request
     ) {
 
@@ -263,37 +313,23 @@ public class AdminController {
 
             apiResponse = new ApiResponse();
 
-//            log.info("memberSeq = {}", session.getAttribute("memberSeq"));
+            int adminSeq = getAdmin.getSeq();
+            Optional<Admin> findAdmin = adminService.findAdmin(adminSeq);
+            Admin getAdminPresent;
 
-            if(session.getAttribute("adminSeq") != null && !session.getAttribute("adminSeq").equals("")) {
+            if(findAdmin.isPresent()) {
 
-                String adminSeq = String.valueOf(session.getAttribute("adminSeq"));
-                int convertMemberSeq = Integer.parseInt(adminSeq);
-                Optional<Admin> findAdmin = adminService.findAdmin(convertMemberSeq);
-                Admin getAdmin;
+                getAdminPresent = findAdmin.get();
 
-                if(findAdmin.isPresent()) {
+                ObjectMapper mapper = new ObjectMapper();
+                String jsonString = mapper.writeValueAsString(getAdminPresent);
 
-                    getAdmin = findAdmin.get();
+                JSONObject jsonObject = new JSONObject(jsonString);
 
-                    ObjectMapper mapper = new ObjectMapper();
-                    String jsonString = mapper.writeValueAsString(getAdmin);
-
-                    JSONObject jsonObject = new JSONObject(jsonString);
-
-                    apiResponse.setMessage(HttpStatus.OK.name());
-                    apiResponse.setCode(HttpStatus.OK.value());
-                    apiResponse.setData(jsonObject.toString());
-                    apiResponse.setCount(1);
-
-                } else {
-
-                    apiResponse.setMessage(HttpStatus.INTERNAL_SERVER_ERROR.name());
-                    apiResponse.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
-                    apiResponse.setData(new JSONObject());
-                    apiResponse.setCount(0);
-
-                }
+                apiResponse.setMessage(HttpStatus.OK.name());
+                apiResponse.setCode(HttpStatus.OK.value());
+                apiResponse.setData(jsonObject.toString());
+                apiResponse.setCount(1);
 
             } else {
 
@@ -303,6 +339,7 @@ public class AdminController {
                 apiResponse.setCount(0);
 
             }
+
 
         } catch(Exception e) {
 
@@ -348,6 +385,7 @@ public class AdminController {
             int age = (currentYear-birthYear);
             updateAdmin.setAge(String.valueOf(age));
             updateAdmin.setSeq(userDetailsModel.getUserSeq());
+            updateAdmin.setUpdateId(userDetailsModel.getUsername());
 
             if(updateAdmin.getPassword() != null && updateAdmin.getPassword() != "") {
                 String encodePassword = passwordEncoder.encode(updateAdmin.getPassword());

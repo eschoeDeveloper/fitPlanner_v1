@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h4>운동 종목 관리</h4>
+                <h4>운동 부위 관리</h4>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -48,29 +48,25 @@
                 <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <td>운동종목</td>
-                        <td>설명</td>
-                        <td>난이도</td>
+                        <td>운동부위</td>
                         <td>사용여부</td>
                         <td>등록일</td>
                         <td>추가작업</td>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr :key="i" v-for="(_exercise, i) in exerciseList">
-                        <td>{{_exercise.exerciseNm}}</td>
-                        <td>{{_exercise.exerciseDesc}}</td>
-                        <td>{{_exercise.exerciseLevel}}</td>
-                        <td>{{_exercise.useYn}}</td>
-                        <td>{{_exercise.registDt}}</td>
+                    <tr :key="i" v-for="(_category, i) in exerciseCategoryList">
+                        <td>{{_category.categoryNm}}</td>
+                        <td>{{_category.useYn}}</td>
+                        <td>{{_category.registDt}}</td>
                         <td>
                             <button type="button" class="btn btn-outline-info" v-on:click="">수정</button>
                             <button type="button" class="btn btn-outline-danger" v-on:click="">삭제</button>
                         </td>
                     </tr>
-                    <tr v-show="exerciseList.length == 0">
+                    <tr v-show="exerciseCategoryList.length == 0">
                         <td COLSPAN="6">
-                            <p style="text-align: center; padding:1vh;"><h5>등록된 운동 카테고리가 없습니다..</h5></p>
+                            <p style="text-align: center; padding:1vh;"><h5>등록된 운동 부위가 없습니다..</h5></p>
                         </td>
                     </tr>
                     </tbody>

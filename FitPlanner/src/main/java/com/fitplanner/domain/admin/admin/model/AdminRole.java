@@ -1,4 +1,4 @@
-package com.fitplanner.domain.admin.member.model;
+package com.fitplanner.domain.admin.admin.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

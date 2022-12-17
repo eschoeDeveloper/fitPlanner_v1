@@ -36,12 +36,12 @@ public class MemberMainRepository {
     public List<Map<String, Object>> getFoodDietList(int memberSeq) {
 
         String sqlQuery = "SELECT\n" +
-                "*\n" +
+                "a.*\n" +
                 "FROM FP_FOODDIET_FOOD a\n" +
                 "JOIN FP_FOODDIET_MEMBER b\n" +
                 "WHERE b.FOOD_IDX LIKE '%' || a.FOOD_NO || '%' " +
                 "  AND b.MEMBER_SEQ = "+ memberSeq +"\n" +
-                "ORDER BY a.SCHEDULE_NO DESC\n" +
+                "ORDER BY a.FOOD_NO DESC\n" +
                 "LIMIT 0,5;";
 
         Query query = entityManager.createNativeQuery(sqlQuery);

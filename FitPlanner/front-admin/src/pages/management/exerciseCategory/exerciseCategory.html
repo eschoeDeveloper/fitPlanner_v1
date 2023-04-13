@@ -1,0 +1,84 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h4>운동 부위 관리</h4>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item">목록</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <!-- Default box -->
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header">
+
+                <div class="card-tools">
+                    <button
+                        type="button"
+                        class="btn btn-tool"
+                        data-widget="collapse"
+                        data-toggle="tooltip"
+                        title="Collapse"
+                    >
+                        <i class="fa fa-minus"></i>
+                    </button>
+                    <button
+                        type="button"
+                        class="btn btn-tool"
+                        data-widget="remove"
+                        data-toggle="tooltip"
+                        title="Remove"
+                    >
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <td>운동부위</td>
+                        <td>사용여부</td>
+                        <td>등록일</td>
+                        <td>추가작업</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr :key="i" v-for="(_category, i) in exerciseCategoryList">
+                        <td>{{_category.categoryNm}}</td>
+                        <td>{{_category.useYn}}</td>
+                        <td>{{_category.registDt}}</td>
+                        <td>
+                            <button type="button" class="btn btn-outline-info" v-on:click="">수정</button>
+                            <button type="button" class="btn btn-outline-danger" v-on:click="">삭제</button>
+                        </td>
+                    </tr>
+                    <tr v-show="exerciseCategoryList.length == 0">
+                        <td COLSPAN="6">
+                            <p style="text-align: center; padding:1vh;"><h5>등록된 운동 부위가 없습니다..</h5></p>
+                        </td>
+                    </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">Footer</div>
+            <!-- /.card-footer-->
+        </div>
+    </div>
+    <!-- /.card -->
+</section>
+<!-- /.content -->

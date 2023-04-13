@@ -1,0 +1,59 @@
+<div class="login-box">
+    <!-- /.login-logo -->
+    <div class="card card-outline card-primary">
+        <div class="card-header text-center">
+            <router-link to="/" class="h4"
+                ><b>{{ $t("labels.console") }}</b> {{ $t("labels.role")
+                }}</router-link
+            >
+        </div>
+        <div class="card-body">
+
+            <form @submit.prevent="loginByAuth">
+                <app-input
+                    icon="envelope"
+                    class="mb-3"
+                    type="text"
+                    placeholder="ID"
+                    autocomplete="off"
+                    v-model="inputId"
+                />
+                <app-input
+                    icon="lock"
+                    class="mb-3"
+                    type="password"
+                    placeholder="Password"
+                    autocomplete="off"
+                    v-model="inputPassword"
+                />
+
+                <div class="row">
+                    <div class="col-7">
+                        <pf-checkbox type="check" v-model="rememberMe">
+                            {{ $t("labels.rememberMe") }}
+                        </pf-checkbox>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-5">
+                        <pf-button
+                            type="submit"
+                            block="true"
+                            :loading="isAuthLoading"
+                        >
+                            {{ $t("labels.signIn") }}
+                        </pf-button>
+                    </div>
+                    <!-- /.col -->
+                </div>
+            </form>
+
+            <p class="mb-1">
+                <router-link to="/forgot-password">
+                    {{ $t("labels.forgotPassword") }}
+                </router-link>
+            </p>
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+</div>

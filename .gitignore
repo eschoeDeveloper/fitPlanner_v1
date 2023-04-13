@@ -1,0 +1,9 @@
+/node_modules/**
+*-lock.json
+app.*.js
+app.*.js.map
+app.*.css
+chunk-*.js.map
+chunk-*.js
+chunk-*.css
+.idea

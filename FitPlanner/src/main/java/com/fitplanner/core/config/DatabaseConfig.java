@@ -2,6 +2,7 @@ package com.fitplanner.core.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -13,7 +14,7 @@ import javax.sql.DataSource;
 @Configuration
 @EnableJpaAuditing
 @EnableJpaRepositories(
-  basePackages = "com.fitplanner."
+  basePackages = "com.fitplanner.domain"
 )
 @RequiredArgsConstructor
 public class DatabaseConfig {
@@ -21,9 +22,9 @@ public class DatabaseConfig {
     private final Environment env;
 
     @Bean
-    @ConfigurationProperties(prefix = "spring.datasource")
+    @ConfigurationProperties(prefix = "spring.datasource.hikari")
     public DataSource getDataSource() {
-        return null;
+        return DataSourceBuilder.create().build();
     }
 
 }

@@ -1,0 +1,128 @@
+<!-- Content Header (Page header) -->
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">{{ $t("labels.dashboard") }}</h1>
+            </div>
+            <!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item">
+                        <router-link to="/">{{ $t("labels.home") }}</router-link>
+                    </li>
+                    <li class="breadcrumb-item active">Dashboard v1</li>
+                </ol>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+
+<!-- Main content -->
+<section class="content">
+
+    <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-lg-3 col-6">
+                <h4>연령대별 회원 수</h4>
+
+                <router-link to="/" class="small-box-footer"
+                >More info <i class="fas fa-arrow-circle-right"></i
+                ></router-link>
+            </div>
+        </div>
+
+        <hr/>
+
+        <div class="row" v-for="memberAge in memberAgeList">
+
+            <div class="col-lg-3 col-6" v-for="(val, key) in memberAge">
+                <!-- small box -->
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>{{ val }}</h3>
+
+                        <h4>{{ key }}</h4>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+                </div>
+            </div>
+            <!-- ./col -->
+
+        </div>
+
+        <hr/>
+
+        <div class="row">
+            <div class="col-lg-3 col-6">
+                <h4>성별 회원 수</h4>
+
+                <router-link to="/" class="small-box-footer"
+                >More info <i class="fas fa-arrow-circle-right"></i
+                ></router-link>
+            </div>
+        </div>
+
+        <hr/>
+
+        <div class="row" v-for="memberSex in memberSexList">
+            <div class="col-lg-3 col-6" v-for="(val, key) in memberSex">
+                <!-- small box -->
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3>{{ val }}</h3>
+                        <h4>{{ key }}</h4>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <router-link to="/" class="small-box-footer"
+                    >More info <i class="fas fa-arrow-circle-right"></i
+                    ></router-link>
+                </div>
+            </div>
+            <!-- ./col -->
+        </div>
+
+        <hr/>
+
+        <div class="row">
+            <div class="col-lg-3 col-6">
+                <h4>운동 부위별 순위</h4>
+
+                <router-link to="/" class="small-box-footer"
+                >More info <i class="fas fa-arrow-circle-right"></i
+                ></router-link>
+            </div>
+        </div>
+
+        <hr/>
+
+        <div class="row">
+            <div class="col-lg-3 col-6" :key="i" v-for="(exerciseRank, i) in exerciseRankList">
+                <!-- small box -->
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3>{{ exerciseRank.exerciseRank }}<span style="font-size:0.7em;">위</span></h3>
+                        <h4>{{ exerciseRank.exerciseCategoryNm }}</h4>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-add"></i>
+                    </div>
+                </div>
+            </div>
+            <!-- ./col -->
+        </div>
+
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</section>
+<!-- /.content -->

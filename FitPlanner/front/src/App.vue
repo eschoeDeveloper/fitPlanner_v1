@@ -1,26 +1,60 @@
+
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+
+  <div class="h-100 w-100 d-inline-block">
+
+    <AppHeader ref="appHeader" v-show="isHeader === true"/>
+
+    <router-view/>
+
+  </div>
+
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  data() {
+    return {
+      isHeader : false
+    }
+  },
+  compatConfig: { MODE: 3 },
+  watch: {
+    $route(to, from) {
+
+      if(to.path != from.path) {
+
+        this.$refs.appHeader.$refs.navbarToggleButton.classList.add("collapsed");
+        this.$refs.appHeader.$refs.navbarSupportedContent.classList.remove("show");
+
+        if(
+            to.path.indexOf("index") < 0 &&
+            to.path.indexOf("login") < 0 &&
+            to.path.indexOf("signUp") < 0 &&
+            to.path.indexOf("pwdReset") < 0 &&
+            to.path.indexOf("pwdResetAuth") < 0 &&
+            to.path.indexOf("pwdResetExecute") < 0 &&
+            to.path.indexOf("loginFail") < 0 &&
+            to.path.indexOf("signUpResult") < 0
+        ) {
+
+          if (this.$store.state.apiToken == null || this.$store.state.apiToken == "") {
+            this.$router.push({name: "AppLogin"});
+          }
+
+        }
+
+      }
+
+    }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+html,body,#app{
+  height: 100%;
 }
 </style>

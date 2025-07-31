@@ -3,7 +3,7 @@
 **개인 운동 관리 앱**  
 운동 일정과 주변 헬스장을 효과적으로 관리할 수 있도록 돕는 포트폴리오용 피트니스 앱입니다.
 
-![fitplanner-banner](./images/banner.png) <!-- (원하시면 여기에 대표 이미지 추가) -->
+![fitplanner-banner](./src/resources/static/asset/img/heathGym.24e27cd1.jpg) <!-- (원하시면 여기에 대표 이미지 추가) -->
 
 ---
 
